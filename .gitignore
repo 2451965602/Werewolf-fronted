@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local agent workflow artifacts
+.agents/
+.opencode/
+.superpowers/
+skills-lock.json
