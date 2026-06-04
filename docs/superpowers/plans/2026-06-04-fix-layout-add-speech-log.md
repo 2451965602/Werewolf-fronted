@@ -2,6 +2,7 @@
 change: fix-layout-add-speech-log
 design-doc: docs/superpowers/specs/2026-06-04-fix-layout-add-speech-log-design.md
 base-ref: 622587caefe6bd70eadb3cdfe178f9f88e2f1190
+archived-with: 2026-06-04-fix-layout-add-speech-log
 ---
 
 # Fix Layout Add Speech Log Implementation Plan
@@ -14,6 +15,7 @@ base-ref: 622587caefe6bd70eadb3cdfe178f9f88e2f1190
 
 **Tech Stack:** React 19、TypeScript、Vite、Vitest、Tailwind v4、shadcn/ui（`card`、`badge`、`scroll-area`）
 
+archived-with: 2026-06-04-fix-layout-add-speech-log
 ---
 
 ### Task 1: 扩展 view-model，先把数据派生测出来

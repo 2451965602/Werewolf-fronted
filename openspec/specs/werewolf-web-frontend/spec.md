@@ -2,55 +2,18 @@
 
 ### Requirement: Dual-mode werewolf web experience
 
-The web frontend SHALL render a single application entry that defaults to a lobby homepage and only enters the in-game control console through an explicit user action.
+The web frontend SHALL render a lobby-first entry and, once the user enters the control console, SHALL keep the desktop spectator layout readable without collapsing its primary stage regions.
 
-#### Scenario: Uninitialized game shows lobby homepage
+#### Scenario: Desktop control console keeps stable stage regions
 
-- **GIVEN** the frontend can reach the game service
-- **AND** the current game state indicates no active game has been initialized
-- **WHEN** the application finishes its initial state fetch
-- **THEN** it renders a lobby homepage with a primary start action
-- **AND** it does not render controls that require an active game session
-
-#### Scenario: Active game does not auto-enter console
-
-- **GIVEN** the current game state represents an active or completed game session
-- **WHEN** the application finishes its initial state fetch
-- **THEN** it still renders the lobby homepage
-- **AND** it offers a continue-current-game action instead of automatically entering the control console
-
-#### Scenario: User explicitly enters the control console
-
-- **GIVEN** the application is rendering the lobby homepage
-- **AND** the current game state represents an active or completed game session
-- **WHEN** the user chooses to continue the current game
-- **THEN** the frontend renders the control console with the synchronized game state and messages
-
-### Requirement: Server-driven game controls
-
-The web frontend SHALL drive game progression only through the existing game service APIs and SHALL not maintain a separate local game engine.
-
-#### Scenario: Starting a game transitions from lobby to console
-
-- **GIVEN** the application is showing the lobby homepage
-- **WHEN** the user triggers the primary start action
-- **THEN** the frontend calls `POST /api/game/start`
-- **AND** on success it refreshes game state and messages before rendering the in-game console
-
-### Requirement: Hybrid synchronization for status and messages
-
-The web frontend SHALL refresh state and messages immediately after key user actions and MAY also perform lightweight background synchronization to keep the display current.
-
-#### Scenario: Background synchronization updates lobby summary without forcing navigation
-
-- **GIVEN** the application is idle on the lobby homepage
-- **WHEN** lightweight background synchronization runs
-- **THEN** the frontend refreshes current game summary information
-- **AND** it does not automatically switch from the lobby homepage into the control console
+- **GIVEN** the user has entered the in-game control console on a desktop-width viewport
+- **WHEN** the frontend renders synchronized game state and messages
+- **THEN** the primary narrative stage remains visible and scrollable
+- **AND** supporting regions for compact stage status, seat overview, and detailed player context do not collapse to zero height
 
 ### Requirement: Readable spectator timeline
 
-The web frontend SHALL present spectator-visible message flow as a structured timeline that distinguishes AI/player speech, system announcements, and vote-related events.
+The web frontend SHALL present spectator-visible message flow as a structured timeline that distinguishes AI/player speech, system announcements, and vote-related events, and SHALL expose a separate current-round speech record view for player speech.
 
 #### Scenario: Timeline distinguishes message categories
 
@@ -65,3 +28,23 @@ The web frontend SHALL present spectator-visible message flow as a structured ti
 - **WHEN** the control console renders the narrative timeline
 - **THEN** the frontend highlights the latest relevant item as the current focal point
 - **AND** keeps earlier entries browsable in the historical timeline
+
+#### Scenario: Current-round speech record stays synchronized with timeline
+
+- **GIVEN** synchronized game messages include player speech for the active round
+- **WHEN** the control console renders the desktop spectator view
+- **THEN** the frontend shows a dedicated speech record region for player speech from the current round
+- **AND** each speech record identifies the speaker and preserves message order
+- **AND** the dedicated speech record updates when new synchronized player speech arrives for that round
+
+### Requirement: Spectator seat awareness on desktop
+
+The desktop spectator console SHALL provide a compact seat overview around the main stage that identifies seat number, role, and living status without requiring the detailed player card grid to remain in the primary focus area.
+
+#### Scenario: Compact desktop seat overview weakens eliminated players
+
+- **GIVEN** the user is viewing the desktop spectator console
+- **AND** synchronized player state includes both living and eliminated players
+- **WHEN** the compact seat overview renders around the main narrative stage
+- **THEN** each seat overview node identifies seat number and role
+- **AND** eliminated players are visually weakened compared to living players

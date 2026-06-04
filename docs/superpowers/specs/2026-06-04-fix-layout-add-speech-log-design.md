@@ -2,6 +2,8 @@
 comet_change: fix-layout-add-speech-log
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-06-04-fix-layout-add-speech-log
+status: final
 ---
 
 ## Summary
