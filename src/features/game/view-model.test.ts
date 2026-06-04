@@ -140,6 +140,132 @@ describe("buildGameViewModel", () => {
     expect(viewModel.timeline[1]?.tone).toBe("vote")
   })
 
+  it("maps narrator messages into a distinct timeline category", () => {
+    const viewModel = buildGameViewModel(
+      makeState(),
+      [
+        makeMessage({
+          speakerId: 99,
+          speaker: "旁白",
+          content: "夜幕降临，请闭眼。",
+          phase: "night",
+          round: 1,
+          type: "narrator",
+        }),
+      ],
+    )
+
+    expect(viewModel.timeline).toEqual([
+      {
+        id: "1-99-narrator-0",
+        tone: "narrator",
+        content: "夜幕降临，请闭眼。",
+        speaker: "旁白",
+        round: 1,
+        phase: "night",
+      },
+    ])
+  })
+
+  it("builds a current-round speech ledger from player messages only", () => {
+    const state = makeState({
+      round: 3,
+      phase: "day",
+    })
+    const messages = [
+      makeMessage({
+        speakerId: 8,
+        speaker: "赵强",
+        content: "上一轮发言，不应出现在当前回合记录。",
+        phase: "day",
+        round: 2,
+        type: "player",
+      }),
+      makeMessage({
+        speakerId: 9,
+        speaker: "钱丽",
+        content: "系统播报也不应出现在发言记录。",
+        phase: "day",
+        round: 3,
+        type: "system",
+      }),
+      makeMessage({
+        speakerId: 7,
+        speaker: "周涛",
+        content: "我是好人。",
+        phase: "day",
+        round: 3,
+        type: "player",
+      }),
+      makeMessage({
+        speakerId: 5,
+        speaker: "陈静",
+        content: "我也支持先从发言看。",
+        phase: "day",
+        round: 3,
+        type: "player",
+      }),
+    ]
+
+    const viewModel = buildGameViewModel(state, messages)
+
+    expect(viewModel.speechLedger).toEqual({
+      count: 2,
+      latestSpeaker: "陈静",
+      items: [
+        {
+          id: "3-day-7-player-0",
+          speaker: "周涛",
+          content: "我是好人。",
+          round: 3,
+          phase: "day",
+        },
+        {
+          id: "3-day-5-player-1",
+          speaker: "陈静",
+          content: "我也支持先从发言看。",
+          round: 3,
+          phase: "day",
+        },
+      ],
+    })
+  })
+
+  it("derives a seat ring with living and eliminated players", () => {
+    const state = makeState({
+      players: [
+        makePlayer({ id: 1, name: "李明", role: "seer", alive: true, team: "village" }),
+        makePlayer({
+          id: 2,
+          name: "王芳",
+          role: "werewolf",
+          alive: false,
+          team: "wolf",
+        }),
+      ],
+    })
+
+    const viewModel = buildGameViewModel(state, [])
+
+    expect(viewModel.seatRing).toEqual([
+      {
+        seat: 1,
+        name: "李明",
+        role: "seer",
+        alive: true,
+        team: "village",
+      },
+      {
+        seat: 2,
+        name: "王芳",
+        role: "werewolf",
+        alive: false,
+        team: "wolf",
+      },
+    ])
+    expect(viewModel.seatRing[1]?.alive).toBe(false)
+  })
+
   it("maps winner label when game has ended", () => {
     const viewModel = buildGameViewModel(
       makeState({

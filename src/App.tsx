@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { useGameConsole } from "./features/game/use-game-console"
 import { GameShell } from "./features/game/components/game-shell"
-import { PhaseHero } from "./features/game/components/phase-hero"
+import { StageStatusStrip } from "./features/game/components/stage-status-strip"
 import { NarrativeLog } from "./features/game/components/narrative-log"
+import { SpeechLedger } from "./features/game/components/speech-ledger"
+import { SeatRing } from "./features/game/components/seat-ring"
 import { ControlPanel } from "./features/game/components/control-panel"
 import { GameSummary } from "./features/game/components/game-summary"
 import { StatusStrip } from "./features/game/components/status-strip"
@@ -47,23 +49,24 @@ export function App() {
   return (
     <GameShell
       banner={
-        <PhaseHero
+        <StageStatusStrip
           isInitialized={viewModel.isInitialized}
           currentRound={viewModel.currentRound}
           phaseLabel={viewModel.phaseLabel}
           phaseVariant={viewModel.phaseVariant}
           winnerLabel={viewModel.winnerLabel}
-          heroBanner={viewModel.heroBanner}
         />
       }
       mainLog={
-        <NarrativeLog
-          items={viewModel.timeline}
-          emptyState={viewModel.emptyState}
-        />
+        <SeatRing items={viewModel.seatRing}>
+          <NarrativeLog
+            items={viewModel.timeline}
+            emptyState={viewModel.emptyState}
+          />
+        </SeatRing>
       }
       sideRail={
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           <ControlPanel
             requestState={requestState}
             isInitialized={viewModel.isInitialized}
@@ -71,6 +74,7 @@ export function App() {
             onStart={start}
             onAdvance={advance}
           />
+          <SpeechLedger ledger={viewModel.speechLedger} />
           <GameSummary summary={viewModel.summary} />
           <StatusStrip
             error={requestState.error}
@@ -79,7 +83,7 @@ export function App() {
         </div>
       }
       situation={
-        <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
+        <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
           <RoleSpotlight spotlight={viewModel.roleSpotlight} />
           <PlayerGrid players={viewModel.players} />
         </div>

@@ -18,6 +18,14 @@ interface NarrativeLogProps {
 }
 
 const toneMap = {
+  narrator: {
+    badge: "text-cyan-300 bg-cyan-500/10 border-cyan-500/20",
+    border: "border-cyan-500/15",
+    background: "bg-cyan-500/5 hover:bg-cyan-500/10",
+    indicator: "bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.45)]",
+    label: "旁白",
+    labelClass: "text-cyan-400/80 font-medium",
+  },
   player: {
     badge: "text-amber-300 bg-amber-500/10 border-amber-500/20",
     border: "border-amber-500/15",

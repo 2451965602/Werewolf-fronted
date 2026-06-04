@@ -1,0 +1,14 @@
+{
+  "change": "fix-layout-add-speech-log",
+  "phase": "design",
+  "mode": "compact",
+  "canonical_spec": "openspec",
+  "generated_by": "comet-handoff.sh",
+  "context_hash": "a56fed8d6091b10325b3059e43e3996b12f004ac42cd1e2d97c256f950f66591",
+  "files": [
+    { "path": "openspec/changes/fix-layout-add-speech-log/proposal.md", "sha256": "2945393464199b8bca0c678c5a1db020ea88606b4629ac806bac49fceb0f6cb9" },
+    { "path": "openspec/changes/fix-layout-add-speech-log/design.md", "sha256": "2cff05a37abbdcb2e535e3f0ba54942733127a05eb1c15a179102bf40a41ab10" },
+    { "path": "openspec/changes/fix-layout-add-speech-log/tasks.md", "sha256": "1f60bf632c528d84aad7956ab04197fe282a63cc39403893473ae95c623997f4" },
+    { "path": "openspec/changes/fix-layout-add-speech-log/specs/werewolf-web-frontend/spec.md", "sha256": "4a764159058fdb1bb3a0f44ab27398d9fcbec993a915933fed9235228cf58311" }
+  ]
+}

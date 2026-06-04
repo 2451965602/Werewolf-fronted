@@ -46,11 +46,33 @@ export interface ApiGameState {
 
 export interface TimelineItem {
   id: string
-  tone: "system" | "player" | "vote"
+  tone: "system" | "narrator" | "player" | "vote"
   content: string
   speaker: string
   round: number
   phase: ApiPhase
+}
+
+export interface SpeechLedgerItem {
+  id: string
+  speaker: string
+  content: string
+  round: number
+  phase: ApiPhase
+}
+
+export interface SpeechLedger {
+  count: number
+  latestSpeaker: string | null
+  items: SpeechLedgerItem[]
+}
+
+export interface SeatRingItem {
+  seat: number
+  name: string
+  role: ApiRole
+  alive: boolean
+  team: ApiTeam
 }
 
 export interface HeroBannerContent {
@@ -88,6 +110,8 @@ export interface GameViewModel {
     primaryActionLabel: string
   }
   players: ApiPlayer[]
+  speechLedger: SpeechLedger
+  seatRing: SeatRingItem[]
   summary: {
     currentRound: number
     phaseLabel: string
