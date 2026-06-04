@@ -49,6 +49,12 @@ export function buildGameViewModel(
 
   return {
     screenMode: "console",
+    currentGameSummary: {
+      round: state.round,
+      phaseLabel,
+      aliveCount,
+      winnerLabel,
+    },
     isInitialized: true,
     currentRound: state.round,
     phaseVariant: mapPhaseVariant(resolvedPhase),
@@ -87,6 +93,7 @@ export function buildGameViewModel(
 export function createUninitializedViewModel(): GameViewModel {
   return {
     screenMode: "pregame",
+    currentGameSummary: null,
     isInitialized: false,
     currentRound: 0,
     phaseVariant: "idle",

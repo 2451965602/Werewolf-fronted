@@ -20,6 +20,7 @@ describe("GameShell", () => {
     expect(html).toContain('aria-label="main log"')
     expect(html).toContain('aria-label="side rail"')
     expect(html).toContain('aria-label="situation"')
+    expect(html).toContain("lg:h-screen")
     expect(html).toContain("Banner Content")
     expect(html).toContain("Main Log Content")
     expect(html).toContain("Side Rail Content")

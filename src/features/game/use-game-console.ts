@@ -79,20 +79,22 @@ export function useGameConsole() {
       const snapshot = await startConsole()
 
       if (!requestCoordinatorRef.current.shouldApply(requestId)) {
-        return
+        return false
       }
 
       setViewModel(snapshot.viewModel)
       setRequestState((prev) => ({ ...prev, error: snapshot.error }))
+      return true
     } catch (error) {
       if (!requestCoordinatorRef.current.shouldApply(requestId)) {
-        return
+        return false
       }
 
       setRequestState((prev) => ({
         ...prev,
         error: toErrorMessage(error),
       }))
+      return false
     } finally {
       requestCoordinatorRef.current.endMutation()
       setRequestState((prev) => ({ ...prev, isStarting: false }))

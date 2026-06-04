@@ -1,0 +1,14 @@
+workflow: full
+phase: archive
+build_mode: subagent-driven-development
+isolation: worktree
+verify_mode: full
+base_ref: c312de739e3bf7e5d48d98c9e6857f09798f0e5a
+design_doc: docs/superpowers/specs/2026-06-04-game-lobby-console-design.md
+plan: docs/superpowers/plans/2026-06-04-refactor-game-lobby-console.md
+verify_result: pass
+verification_report: docs/superpowers/reports/2026-06-04-refactor-game-lobby-console-verify.md
+branch_status: handled
+created_at: 2026-06-04
+verified_at: 2026-06-04
+archived: true

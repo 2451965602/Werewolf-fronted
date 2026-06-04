@@ -41,15 +41,12 @@ describe("PreGameScreen", () => {
     const html = renderScreen()
 
     expect(html).toContain("Werewolf Command Stage")
-    expect(html).toContain("先确认联机，再点亮第一夜。")
+    expect(html).toContain("沉浸式观战大厅")
     expect(html).toContain("开始游戏")
     expect(html).toContain("服务正常")
     expect(html).toContain("检查服务状态")
-    expect(html).toContain("服务接入面板")
-    expect(html).toContain("进入游戏前先完成服务自检")
-    expect(html).toContain("沉浸舞台 / 联机驱动")
-    expect(html).toContain("确认服务就绪后，直接开始一局新游戏。")
-    expect(html).toContain("使用 `开始游戏` 后，会立即创建新对局并同步当前进度。")
+    expect(html).toContain("当前暂无进行中对局")
+    expect(html).toContain("如果已有牌局，你可以从右侧卡片继续返回观战控制台。")
   })
 
   it("disables both actions while advancing the game flow", () => {
@@ -62,7 +59,23 @@ describe("PreGameScreen", () => {
       },
     })
 
-    expect(html.match(/disabled=""/g) ?? []).toHaveLength(2)
+    expect((html.match(/disabled=""/g) ?? []).length).toBeGreaterThanOrEqual(3)
+  })
+
+  it("renders active game summary card when current game data exists", () => {
+    const html = renderScreen({
+      currentGameSummary: {
+        round: 4,
+        phaseLabel: "夜晚",
+        aliveCount: 5,
+        winnerLabel: "",
+      },
+      onContinue: vi.fn(),
+    })
+
+    expect(html).toContain("有一局正在进行")
+    expect(html).toContain("第 4 轮 · 夜晚")
+    expect(html).toContain("继续当前对局")
   })
 
   it("renders service status copy and request errors", () => {
