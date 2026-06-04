@@ -3,6 +3,8 @@ role: technical-design
 status: draft
 topic: game-lobby-console
 change: refactor-game-lobby-console
+archived-with: 2026-06-04-refactor-game-lobby-console
+status: final
 ---
 
 ## 目标

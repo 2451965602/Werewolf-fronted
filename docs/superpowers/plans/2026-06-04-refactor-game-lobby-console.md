@@ -2,6 +2,7 @@
 change: refactor-game-lobby-console
 design-doc: docs/superpowers/specs/2026-06-04-game-lobby-console-design.md
 base-ref: c312de739e3bf7e5d48d98c9e6857f09798f0e5a
+archived-with: 2026-06-04-refactor-game-lobby-console
 ---
 
 # Refactor Game Lobby Console Implementation Plan
@@ -14,6 +15,7 @@ base-ref: c312de739e3bf7e5d48d98c9e6857f09798f0e5a
 
 **Tech Stack:** React 19、TypeScript、Vite、Vitest、Tailwind v4、shadcn/base
 
+archived-with: 2026-06-04-refactor-game-lobby-console
 ---
 
 ## 执行摘要

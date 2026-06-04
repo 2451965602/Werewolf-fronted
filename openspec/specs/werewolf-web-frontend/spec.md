@@ -1,74 +1,67 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Dual-mode werewolf web experience
 
-The web frontend SHALL render a single application entry that switches between a pre-game presentation screen and an in-game control console based on server game state.
+The web frontend SHALL render a single application entry that defaults to a lobby homepage and only enters the in-game control console through an explicit user action.
 
-#### Scenario: Uninitialized game shows pre-game screen
+#### Scenario: Uninitialized game shows lobby homepage
 
 - **GIVEN** the frontend can reach the game service
 - **AND** the current game state indicates no active game has been initialized
 - **WHEN** the application finishes its initial state fetch
-- **THEN** it renders a pre-game screen with a primary start action
+- **THEN** it renders a lobby homepage with a primary start action
 - **AND** it does not render controls that require an active game session
 
-#### Scenario: Active game shows control console
+#### Scenario: Active game does not auto-enter console
 
 - **GIVEN** the current game state represents an active or completed game session
-- **WHEN** the application renders the main experience
-- **THEN** it shows the control console with phase information, summary information, player grid, and narrative log
+- **WHEN** the application finishes its initial state fetch
+- **THEN** it still renders the lobby homepage
+- **AND** it offers a continue-current-game action instead of automatically entering the control console
+
+#### Scenario: User explicitly enters the control console
+
+- **GIVEN** the application is rendering the lobby homepage
+- **AND** the current game state represents an active or completed game session
+- **WHEN** the user chooses to continue the current game
+- **THEN** the frontend renders the control console with the synchronized game state and messages
 
 ### Requirement: Server-driven game controls
 
 The web frontend SHALL drive game progression only through the existing game service APIs and SHALL not maintain a separate local game engine.
 
-#### Scenario: Starting a game transitions from pre-game to console
+#### Scenario: Starting a game transitions from lobby to console
 
-- **GIVEN** the application is showing the pre-game screen
+- **GIVEN** the application is showing the lobby homepage
 - **WHEN** the user triggers the primary start action
 - **THEN** the frontend calls `POST /api/game/start`
 - **AND** on success it refreshes game state and messages before rendering the in-game console
-
-#### Scenario: Advancing the game uses server state as source of truth
-
-- **GIVEN** the application is showing the in-game console
-- **WHEN** the user triggers the advance action
-- **THEN** the frontend calls `POST /api/game/next`
-- **AND** it refreshes game state and messages after the action completes
-- **AND** it renders only the state returned by the service
 
 ### Requirement: Hybrid synchronization for status and messages
 
 The web frontend SHALL refresh state and messages immediately after key user actions and MAY also perform lightweight background synchronization to keep the display current.
 
-#### Scenario: Manual actions force immediate refresh
+#### Scenario: Background synchronization updates lobby summary without forcing navigation
 
-- **GIVEN** a user triggers `start`, `next`, or explicit manual refresh
-- **WHEN** the action request succeeds
-- **THEN** the frontend immediately fetches both current game state and messages
-
-#### Scenario: Background synchronization keeps the console current
-
-- **GIVEN** the application is idle on either the pre-game screen or the in-game console
+- **GIVEN** the application is idle on the lobby homepage
 - **WHEN** lightweight background synchronization runs
-- **THEN** the frontend refreshes status information without requiring a user click
-- **AND** a background sync failure does not crash the entire page
+- **THEN** the frontend refreshes current game summary information
+- **AND** it does not automatically switch from the lobby homepage into the control console
 
-### Requirement: Degraded failures remain operable
+### Requirement: Readable spectator timeline
 
-The web frontend SHALL degrade individual panels on partial API failure while keeping the main experience operable whenever possible.
+The web frontend SHALL present spectator-visible message flow as a structured timeline that distinguishes AI/player speech, system announcements, and vote-related events.
 
-#### Scenario: Message fetch failure does not block core controls
+#### Scenario: Timeline distinguishes message categories
 
-- **GIVEN** the game state request succeeds
-- **AND** the message request fails
-- **WHEN** the application updates the console
-- **THEN** the phase, summary, and player controls remain usable
-- **AND** the log area shows an error or retry affordance
+- **GIVEN** synchronized game messages are available
+- **WHEN** the control console renders the narrative timeline
+- **THEN** the frontend visually distinguishes speech, system, and vote-related entries
+- **AND** each timeline item shows enough context to identify its round and phase
 
-#### Scenario: Action failure preserves current view
+#### Scenario: Latest timeline item is emphasized
 
-- **GIVEN** the user is viewing either the pre-game screen or the control console
-- **WHEN** a `start` or `next` action request fails
-- **THEN** the frontend keeps the current stable view visible
-- **AND** it shows a user-readable error message without fabricating local progress
+- **GIVEN** synchronized game messages are available
+- **WHEN** the control console renders the narrative timeline
+- **THEN** the frontend highlights the latest relevant item as the current focal point
+- **AND** keeps earlier entries browsable in the historical timeline
