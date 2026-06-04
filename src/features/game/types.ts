@@ -53,6 +53,12 @@ export interface TimelineItem {
   phase: ApiPhase
 }
 
+export interface HeroBannerContent {
+  kicker: string
+  title: string
+  description: string
+}
+
 export interface GameViewModel {
   screenMode: "pregame" | "console"
   isInitialized: boolean
@@ -60,6 +66,12 @@ export interface GameViewModel {
   phaseVariant: "idle" | ApiPhase
   phaseLabel: string
   winnerLabel: string
+  heroBanner: HeroBannerContent
+  roleSpotlight: {
+    title: string
+    highlight: string
+    supporting: string
+  }
   serviceHealth: {
     label: string
     tone: "ok" | "warning" | "error"
