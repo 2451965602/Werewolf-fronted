@@ -1,9 +1,12 @@
+import type { HeroBannerContent } from "../types"
+
 interface PhaseHeroProps {
   isInitialized: boolean
   currentRound: number
   phaseLabel: string
   phaseVariant: "idle" | "day" | "night" | "ended"
   winnerLabel: string
+  heroBanner?: HeroBannerContent
 }
 
 export function PhaseHero({
@@ -12,89 +15,149 @@ export function PhaseHero({
   phaseLabel,
   phaseVariant,
   winnerLabel,
+  heroBanner,
 }: PhaseHeroProps) {
-  // Goth style styling classes
   const heroBg = isInitialized
     ? phaseVariant === "night"
-      ? "bg-gradient-to-r from-purple-950/40 via-violet-950/30 to-slate-900/40 border-violet-800/20"
+      ? "border-violet-700/30 bg-[radial-gradient(circle_at_top_left,_rgba(168,85,247,0.28),_transparent_38%),linear-gradient(135deg,rgba(24,24,27,0.96),rgba(49,46,129,0.82),rgba(15,23,42,0.98))]"
       : phaseVariant === "ended"
-        ? "bg-gradient-to-r from-amber-950/40 via-red-950/30 to-slate-900/40 border-amber-800/20"
-        : "bg-gradient-to-r from-amber-950/20 via-orange-950/10 to-slate-900/40 border-orange-800/20"
-    : "bg-gradient-to-r from-zinc-950/40 via-slate-900/30 to-zinc-900/40 border-zinc-800/20"
+        ? "border-amber-700/30 bg-[radial-gradient(circle_at_top_left,_rgba(245,158,11,0.24),_transparent_36%),linear-gradient(135deg,rgba(41,37,36,0.98),rgba(120,53,15,0.78),rgba(15,23,42,0.98))]"
+        : "border-orange-700/30 bg-[radial-gradient(circle_at_top_left,_rgba(251,146,60,0.2),_transparent_36%),linear-gradient(135deg,rgba(39,39,42,0.98),rgba(120,53,15,0.72),rgba(15,23,42,0.98))]"
+    : "border-zinc-700/30 bg-[radial-gradient(circle_at_top_left,_rgba(161,161,170,0.16),_transparent_34%),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(39,39,42,0.92),rgba(15,23,42,0.98))]"
 
   const statusPulse =
     isInitialized && phaseVariant === "night"
-      ? "animate-pulse shadow-[0_0_15px_rgba(168,85,247,0.15)]"
-      : isInitialized && phaseVariant === "day"
-        ? "shadow-[0_0_15px_rgba(249,115,22,0.1)]"
-        : ""
+      ? "shadow-[0_24px_80px_rgba(76,29,149,0.35)]"
+    : isInitialized && phaseVariant === "day"
+        ? "shadow-[0_24px_80px_rgba(194,65,12,0.28)]"
+        : "shadow-[0_24px_80px_rgba(120,53,15,0.24)]"
+
+  const bannerCopy =
+    heroBanner ?? {
+      kicker: currentRound > 0 ? `第 ${currentRound} 轮 · ${phaseLabel}` : "牌局待命",
+      title:
+        phaseVariant === "night"
+          ? "夜幕降临，主舞台切入夜间回合"
+          : phaseVariant === "ended"
+            ? winnerLabel || "牌局已结束，等待最终结算"
+            : isInitialized
+              ? "白天讨论开始，留意每一次发言"
+              : "牌局待命，等待主持人开局",
+      description:
+        phaseVariant === "ended"
+          ? winnerLabel || "本局对抗已经结束，等待结果同步。"
+          : isInitialized
+            ? "顶部横幅会持续聚焦当前阶段与主叙事，让观战视线先落在最重要的局势变化上。"
+            : "服务已连接，点击开始后将在这里进入正式观战节奏。",
+    }
+
+  const phaseTextClass =
+    phaseVariant === "night"
+      ? "text-violet-200"
+      : phaseVariant === "ended"
+        ? "text-amber-200"
+        : phaseVariant === "day"
+          ? "text-orange-100"
+          : "text-zinc-200"
+
+  const phaseBadgeClass =
+    phaseVariant === "night"
+      ? "border-violet-400/20 bg-violet-400/10 text-violet-100"
+      : phaseVariant === "ended"
+        ? "border-amber-400/20 bg-amber-400/10 text-amber-100"
+        : phaseVariant === "day"
+          ? "border-orange-300/20 bg-orange-300/10 text-orange-50"
+          : "border-zinc-400/20 bg-zinc-400/10 text-zinc-100"
+
+  const stateLabel =
+    phaseVariant === "ended"
+      ? "已结束"
+      : isInitialized
+        ? "进行中"
+        : "未开局"
+
+  const stateDotClass =
+    phaseVariant === "ended"
+      ? "bg-amber-400"
+      : isInitialized
+        ? "animate-pulse bg-emerald-400"
+        : "bg-zinc-500"
 
   return (
     <div
-      className={`relative overflow-hidden rounded-[24px] border p-6 transition-all duration-500 md:p-8 ${heroBg} ${statusPulse}`}
+      className={`relative overflow-hidden rounded-[28px] border px-6 py-7 transition-all duration-500 md:px-8 md:py-9 ${heroBg} ${statusPulse}`}
     >
-      <div className="relative z-10 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <span className="text-xs font-semibold tracking-wider text-primary uppercase opacity-80">
-            Werewolf Spectator Console
-          </span>
-          <h1 className="mt-1 bg-gradient-to-r from-foreground via-foreground/90 to-foreground/75 bg-clip-text font-heading text-2xl font-bold tracking-tight text-transparent md:text-3xl">
-            狼人杀 观战演示台
-          </h1>
-        </div>
+      <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.04),transparent)] opacity-60" />
+      <div className="absolute -top-16 right-0 h-40 w-40 rounded-full bg-white/6 blur-3xl" />
+      <div className="absolute bottom-0 left-10 h-24 w-24 rounded-full bg-white/5 blur-3xl" />
 
-        <div className="flex items-center gap-3">
-          <div className="hidden flex-col items-end sm:flex">
-            <span className="text-xs text-muted-foreground">当前回合</span>
-            <span className="mt-0.5 text-sm font-semibold text-foreground/90">
-              {currentRound > 0 ? `第 ${currentRound} 轮` : "未开始"}
-            </span>
+      <div className="relative z-10 flex flex-col gap-8">
+        <div className="flex flex-col gap-6 xl:flex-row xl:items-end xl:justify-between">
+          <div className="max-w-3xl">
+            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold tracking-[0.28em] uppercase">
+              <span className="text-white/65">狼人杀观战台</span>
+              <span className="h-1 w-1 rounded-full bg-white/40" />
+              <span className={phaseTextClass}>{bannerCopy.kicker}</span>
+            </div>
+            <h1 className="mt-4 max-w-3xl font-heading text-3xl font-semibold tracking-tight text-white md:text-4xl xl:text-[2.8rem] xl:leading-[1.08]">
+              {bannerCopy.title}
+            </h1>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-white/72 md:text-base">
+              {bannerCopy.description}
+            </p>
           </div>
 
-          <div className="mx-1 hidden h-8 w-[1px] bg-border/40 md:block" />
-
-          <div className="flex flex-col items-end">
-            <span className="text-xs text-muted-foreground">当前局势</span>
-            <div className="mt-0.5 flex items-center gap-2">
-              <span
-                className={`inline-block size-2 rounded-full ${isInitialized ? "animate-pulse bg-emerald-500" : "bg-zinc-500"}`}
-              />
-              <span className="text-sm font-medium">
-                {phaseVariant === "ended"
-                  ? "已结束"
-                  : isInitialized
-                    ? "进行中"
-                    : "未开局"}
+          <div className="grid gap-3 sm:grid-cols-3 xl:min-w-[420px] xl:max-w-[460px] xl:flex-1">
+            <div className="rounded-[20px] border border-white/10 bg-black/18 p-4 backdrop-blur-md">
+              <span className="text-[11px] tracking-[0.2em] text-white/45 uppercase">
+                当前阶段
               </span>
+              <div className="mt-3 flex items-center gap-2">
+                <span
+                  className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${phaseBadgeClass}`}
+                >
+                  {phaseLabel}
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-[20px] border border-white/10 bg-black/18 p-4 backdrop-blur-md">
+              <span className="text-[11px] tracking-[0.2em] text-white/45 uppercase">
+                当前回合
+              </span>
+              <div className="mt-3 text-lg font-semibold text-white/92">
+                {currentRound > 0 ? `第 ${currentRound} 轮` : "未开始"}
+              </div>
+            </div>
+
+            <div className="rounded-[20px] border border-white/10 bg-black/18 p-4 backdrop-blur-md">
+              <span className="text-[11px] tracking-[0.2em] text-white/45 uppercase">
+                牌局状态
+              </span>
+              <div className="mt-3 flex items-center gap-2 text-sm text-white/86">
+                <span className={`inline-block size-2 rounded-full ${stateDotClass}`} />
+                <span className="font-medium">{stateLabel}</span>
+              </div>
             </div>
           </div>
-
-          <div className="flex items-center gap-2 rounded-2xl border border-white/5 bg-black/30 px-4 py-2 backdrop-blur-md">
-            <span className="text-xs text-muted-foreground">阶段</span>
-            <span
-              className={`text-sm font-bold tracking-wide ${
-                phaseLabel === "夜晚"
-                  ? "text-purple-400"
-                  : phaseLabel === "已结束"
-                    ? "text-amber-400"
-                    : "text-amber-200"
-              }`}
-            >
-              {phaseLabel}
-            </span>
-          </div>
         </div>
+
+        {winnerLabel ? (
+          <div className="relative overflow-hidden rounded-[22px] border border-amber-400/20 bg-amber-500/12 px-5 py-4 text-sm text-amber-50 backdrop-blur-md">
+            <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+              <div>
+                <span className="text-[11px] tracking-[0.22em] text-amber-100/70 uppercase">
+                  终局播报
+                </span>
+                <p className="mt-2 text-base font-semibold">{winnerLabel}</p>
+              </div>
+              <p className="max-w-xl text-sm leading-6 text-amber-50/78">
+                游戏圆满落幕，主舞台已切换到结算视图。
+              </p>
+            </div>
+          </div>
+        ) : null}
       </div>
-
-      {winnerLabel && (
-        <div className="animate-fade-in relative z-10 mt-4 flex items-center gap-2 rounded-2xl border border-amber-500/20 bg-amber-500/10 p-4 text-sm font-medium text-amber-300">
-          <span className="text-lg">👑</span>
-          <div>
-            <span className="font-bold">{winnerLabel}</span> —
-            游戏圆满落幕，感谢观战！
-          </div>
-        </div>
-      )}
     </div>
   )
 }

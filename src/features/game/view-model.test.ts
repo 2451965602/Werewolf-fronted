@@ -50,8 +50,15 @@ describe("buildGameViewModel", () => {
       ],
       lastNightKilled: 2,
     })
+    const messages = [
+      makeMessage({
+        content: "狼人请睁眼并选择目标。",
+        phase: "night",
+        round: 1,
+      }),
+    ]
 
-    const viewModel = buildGameViewModel(state, [])
+    const viewModel = buildGameViewModel(state, messages)
 
     expect(viewModel.isInitialized).toBe(true)
     expect(viewModel.currentRound).toBe(1)
@@ -66,6 +73,16 @@ describe("buildGameViewModel", () => {
       title: "Werewolf Command Stage",
       description: "通过服务端状态驱动当前局势、日志和玩家状态。",
       primaryActionLabel: "开始游戏",
+    })
+    expect(viewModel.heroBanner).toEqual({
+      kicker: "第 1 轮 · 夜晚",
+      title: "夜幕降临，行动正在暗处推进",
+      description: "狼人请睁眼并选择目标。",
+    })
+    expect(viewModel.roleSpotlight).toEqual({
+      title: "夜间焦点",
+      highlight: "昨夜 王芳 倒下",
+      supporting: "狼人请睁眼并选择目标。",
     })
     expect(viewModel.summary.currentRound).toBe(1)
     expect(viewModel.summary.phaseLabel).toBe("夜晚")
@@ -118,12 +135,53 @@ describe("buildGameViewModel", () => {
 
   it("maps winner label when game has ended", () => {
     const viewModel = buildGameViewModel(
-      makeState({ phase: "ended", ended: true, winner: "village" }),
-      []
+      makeState({
+        phase: "ended",
+        ended: true,
+        winner: "village",
+        players: [
+          makePlayer({ id: 1, team: "village", alive: true }),
+          makePlayer({ id: 2, name: "王芳", team: "wolf", alive: false }),
+        ],
+      }),
+      [
+        makeMessage({
+          content: "游戏结束，村民阵营获胜。",
+          phase: "ended",
+          type: "narrator",
+        }),
+      ]
     )
 
     expect(viewModel.phaseLabel).toBe("已结束")
     expect(viewModel.winnerLabel).toBe("村民阵营获胜")
+    expect(viewModel.roleSpotlight).toEqual({
+      title: "终局结果",
+      highlight: "村民阵营获胜",
+      supporting: "1 人存活，1 人出局。游戏结束，村民阵营获胜。",
+    })
+  })
+
+  it("falls back to a safe phase label when backend phase is unknown", () => {
+    const viewModel = buildGameViewModel(
+      makeState({
+        phase: "dusk" as ApiGameState["phase"],
+      }),
+      []
+    )
+
+    expect(viewModel.phaseVariant).toBe("night")
+    expect(viewModel.phaseLabel).toBe("阶段同步中")
+    expect(viewModel.heroBanner.kicker).toBe("第 1 轮 · 阶段同步中")
+    expect(viewModel.heroBanner.title).toBe("阶段同步中，等待服务端确认")
+    expect(viewModel.heroBanner.description).toBe(
+      "当前阶段暂不可用，系统正在同步最新局势。"
+    )
+    expect(viewModel.roleSpotlight).toEqual({
+      title: "未知阶段",
+      highlight: "当前阶段状态同步中",
+      supporting: "当前仍有 0 名玩家存活，等待服务端同步下一条阶段信息。",
+    })
   })
 })
 
@@ -143,6 +201,16 @@ describe("createUninitializedViewModel", () => {
       title: "Werewolf Command Stage",
       description: "连接服务后可直接开始一局新的狼人杀演示。",
       primaryActionLabel: "开始游戏",
+    })
+    expect(viewModel.heroBanner).toEqual({
+      kicker: "等待开局",
+      title: "狼人杀观战演示台",
+      description: "连接服务后可直接开始一局新的狼人杀演示。",
+    })
+    expect(viewModel.roleSpotlight).toEqual({
+      title: "开局提示",
+      highlight: "连接服务后即可开始新的一局",
+      supporting: "进入对局后，这里会展示阶段焦点、关键事件和胜负结果。",
     })
     expect(viewModel.players).toEqual([])
     expect(viewModel.timeline).toEqual([])

@@ -7,6 +7,7 @@ import { ControlPanel } from "./features/game/components/control-panel"
 import { GameSummary } from "./features/game/components/game-summary"
 import { StatusStrip } from "./features/game/components/status-strip"
 import { PlayerGrid } from "./features/game/components/player-grid"
+import { RoleSpotlight } from "./features/game/components/role-spotlight"
 import { PreGameScreen } from "./features/game/components/pre-game-screen"
 
 export function App() {
@@ -30,22 +31,23 @@ export function App() {
 
   return (
     <GameShell
-      hero={
+      banner={
         <PhaseHero
           isInitialized={viewModel.isInitialized}
           currentRound={viewModel.currentRound}
           phaseLabel={viewModel.phaseLabel}
           phaseVariant={viewModel.phaseVariant}
           winnerLabel={viewModel.winnerLabel}
+          heroBanner={viewModel.heroBanner}
         />
       }
-      log={
+      mainLog={
         <NarrativeLog
           items={viewModel.timeline}
           emptyState={viewModel.emptyState}
         />
       }
-      rail={
+      sideRail={
         <div className="space-y-6">
           <ControlPanel
             requestState={requestState}
@@ -61,7 +63,12 @@ export function App() {
           />
         </div>
       }
-      players={<PlayerGrid players={viewModel.players} />}
+      situation={
+        <div className="space-y-6">
+          <RoleSpotlight spotlight={viewModel.roleSpotlight} />
+          <PlayerGrid players={viewModel.players} />
+        </div>
+      }
     />
   )
 }

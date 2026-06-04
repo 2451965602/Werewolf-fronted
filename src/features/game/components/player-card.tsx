@@ -7,65 +7,96 @@ interface PlayerCardProps {
 export function PlayerCard({ player }: PlayerCardProps) {
   const { id, name, role, alive, team } = player
 
-  // Mapping Role and Team localized names
   const localizedRole = mapRoleLabel(role)
   const localizedTeam = team === "wolf" ? "狼人阵营" : "好人阵营"
-
-  // Theme cards by state
   const isWolf = team === "wolf"
-  const deadClass = !alive
-    ? "opacity-60 bg-zinc-950/45 border-zinc-800/40 text-muted-foreground line-through grayscale"
+  const cardClass = !alive
+    ? "border-zinc-800/70 bg-[linear-gradient(180deg,rgba(39,39,42,0.42)_0%,rgba(10,10,10,0.78)_100%)] text-zinc-300/80 grayscale"
     : isWolf
-      ? "bg-gradient-to-b from-purple-950/15 via-black/25 to-black/35 border-purple-900/30 text-purple-200"
-      : "bg-gradient-to-b from-amber-950/10 via-black/25 to-black/35 border-amber-900/20 text-amber-100/90"
+      ? "border-violet-500/25 bg-[linear-gradient(180deg,rgba(88,28,135,0.26)_0%,rgba(16,16,24,0.9)_100%)] text-violet-100 shadow-[0_14px_36px_rgba(88,28,135,0.18)]"
+      : "border-amber-500/20 bg-[linear-gradient(180deg,rgba(120,53,15,0.18)_0%,rgba(17,17,17,0.88)_100%)] text-amber-50 shadow-[0_14px_36px_rgba(120,53,15,0.14)]"
+
+  const accentClass = !alive
+    ? "from-zinc-400/40 via-zinc-300/10 to-transparent"
+    : isWolf
+      ? "from-violet-300/80 via-fuchsia-400/25 to-transparent"
+      : "from-amber-200/80 via-amber-300/20 to-transparent"
+
+  const statusBadgeClass = alive
+    ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
+    : "border-rose-500/20 bg-rose-500/10 text-rose-300"
+
+  const teamBadgeClass = !alive
+    ? "border-zinc-700/60 bg-zinc-900/60 text-zinc-400"
+    : isWolf
+      ? "border-violet-500/20 bg-violet-500/10 text-violet-200"
+      : "border-amber-500/20 bg-amber-500/10 text-amber-200"
 
   const roleBadgeClass = !alive
-    ? "bg-zinc-800 text-zinc-500 border-zinc-700/30"
+    ? "border-zinc-700/60 bg-zinc-900/60 text-zinc-300"
     : isWolf
-      ? "bg-purple-500/10 text-purple-300 border-purple-500/20"
+      ? "border-violet-500/20 bg-violet-500/10 text-violet-100"
       : role === "villager"
-        ? "bg-slate-500/10 text-slate-300 border-slate-500/20"
-        : "bg-amber-500/10 text-amber-300 border-amber-500/20"
+        ? "border-slate-500/20 bg-slate-500/10 text-slate-100"
+        : "border-amber-500/20 bg-amber-500/10 text-amber-100"
 
   return (
     <article
-      className={`relative flex flex-col items-center justify-between rounded-2xl border p-4 transition-all duration-300 hover:scale-[1.03] ${deadClass} min-h-[140px]`}
+      className={`relative flex min-h-[172px] flex-col overflow-hidden rounded-[24px] border p-3.5 transition-all duration-300 hover:-translate-y-1 ${cardClass}`}
     >
-      {/* Player ID Number Badge */}
-      <span
-        className={`absolute top-2.5 left-2.5 flex size-5 items-center justify-center rounded-lg border font-mono text-[10px] font-bold ${
-          !alive
-            ? "border-zinc-800 bg-zinc-900 text-zinc-500"
-            : "border-white/5 bg-black/45 text-foreground/75"
-        }`}
-      >
-        {id}
-      </span>
+      <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${accentClass}`} />
 
-      {/* Life/Death Corner Indicator */}
-      <span
-        className={`absolute top-2.5 right-2.5 rounded-full border px-1.5 py-0.5 text-[10px] font-semibold ${
-          alive
-            ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400"
-            : "border-rose-500/20 bg-rose-500/10 text-rose-400"
-        }`}
-      >
-        {alive ? "存活" : "出局"}
-      </span>
+      <div className="flex items-start justify-between gap-2">
+        <div className="rounded-2xl border border-white/10 bg-black/30 px-3 py-2">
+          <div className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground/70">
+            Seat
+          </div>
+          <div className="mt-1 font-mono text-xl font-bold leading-none text-foreground">
+            {id}
+          </div>
+        </div>
 
-      {/* Player Identity Icon & Localized Name */}
-      <div className="mt-4 mb-2 flex w-full flex-col items-center text-center">
-        <span className="max-w-full truncate text-sm font-semibold tracking-wide">
-          {name}
-        </span>
-        <span className="mt-0.5 text-[10px] opacity-60">{localizedTeam}</span>
+        <div className="flex flex-col items-end gap-1.5">
+          <span
+            className={`rounded-full border px-2 py-1 text-[10px] font-semibold tracking-[0.12em] ${statusBadgeClass}`}
+          >
+            {alive ? "存活" : "出局"}
+          </span>
+          <span
+            className={`rounded-full border px-2 py-1 text-[10px] font-medium ${teamBadgeClass}`}
+          >
+            {isWolf ? "狼队" : "村队"}
+          </span>
+        </div>
       </div>
 
-      {/* Player Identity Role Code */}
-      <div
-        className={`w-full rounded-xl border px-2 py-1 text-center text-[11px] font-bold ${roleBadgeClass}`}
-      >
-        {localizedRole}
+      <div className="mt-5 flex flex-1 flex-col justify-between">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.22em] text-muted-foreground/70">
+            <span
+              className={`size-1.5 rounded-full ${alive ? "bg-emerald-400" : "bg-rose-400"}`}
+            />
+            {alive ? "Active" : "Eliminated"}
+          </div>
+
+          <h3
+            className={`mt-2 line-clamp-2 text-base font-semibold tracking-[0.04em] ${alive ? "text-foreground" : "text-zinc-300"}`}
+          >
+            {name}
+          </h3>
+          <p className="mt-1 text-xs text-muted-foreground">{localizedTeam}</p>
+        </div>
+
+        <div
+          className={`mt-4 rounded-2xl border px-3 py-2.5 text-left ${roleBadgeClass}`}
+        >
+          <div className="text-[10px] uppercase tracking-[0.22em] opacity-70">
+            身份
+          </div>
+          <div className="mt-1 text-sm font-bold tracking-[0.04em]">
+            {localizedRole}
+          </div>
+        </div>
       </div>
     </article>
   )
