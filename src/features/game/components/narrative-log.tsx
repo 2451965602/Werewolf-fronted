@@ -1,3 +1,12 @@
+import { Badge } from "../../../components/ui/badge"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../../components/ui/card"
+import { ScrollArea } from "../../../components/ui/scroll-area"
 import type { TimelineItem } from "../types"
 
 interface NarrativeLogProps {
@@ -22,7 +31,7 @@ const toneMap = {
     border: "border-rose-500/15",
     background: "bg-rose-500/5 hover:bg-rose-500/10",
     indicator: "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]",
-    label: "宣判",
+    label: "投票",
     labelClass: "text-rose-500/80 font-semibold",
   },
   system: {
@@ -30,7 +39,7 @@ const toneMap = {
     border: "border-purple-500/15",
     background: "bg-purple-500/5 hover:bg-purple-500/10",
     indicator: "bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]",
-    label: "指引",
+    label: "系统",
     labelClass: "text-purple-400/80 font-medium",
   },
 } as const
@@ -44,22 +53,21 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
   const latestItem = hasItems ? items[items.length - 1] : null
 
   return (
-    <section className="relative flex h-[560px] flex-col overflow-hidden rounded-[28px] border border-border/60 bg-[linear-gradient(180deg,rgba(24,24,27,0.92),rgba(9,9,11,0.94))] shadow-[0_24px_80px_rgba(0,0,0,0.24)] backdrop-blur-md">
+    <Card className="relative flex h-full min-h-[480px] flex-col overflow-hidden border-border/60 bg-[linear-gradient(180deg,rgba(24,24,27,0.92),rgba(9,9,11,0.94))] shadow-[0_24px_80px_rgba(0,0,0,0.24)] lg:min-h-0">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.08),_transparent_40%)]" />
-      <div className="relative z-10 border-b border-white/8 px-6 py-5 md:px-7">
+      <CardHeader className="relative z-10 border-b border-white/8">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
-            <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold tracking-[0.24em] uppercase text-white/48">
-              <span>主舞台</span>
-              <span className="h-1 w-1 rounded-full bg-white/30" />
-              <span>实时叙事流</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="outline">主舞台</Badge>
+              <Badge variant="secondary">实时叙事流</Badge>
             </div>
-            <h2 className="mt-3 font-heading text-2xl font-semibold tracking-tight text-white md:text-[2rem]">
+            <CardTitle className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-[2rem]">
               叙事实录时间线
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-white/62 md:text-base">
-              聚焦当前局势里的发言、裁决与系统播报，让主舞台始终停留在最重要的节奏节点。
-            </p>
+            </CardTitle>
+            <CardDescription className="mt-2 text-sm leading-6 text-white/62 md:text-base">
+              聚焦当前局势里的 AI 发言、投票动作与系统播报，让主舞台始终停留在最重要的节奏节点。
+            </CardDescription>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-[auto_auto] xl:min-w-[360px]">
@@ -84,9 +92,9 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
             </div>
           </div>
         </div>
-      </div>
+      </CardHeader>
 
-      <div className="relative z-10 flex-1 overflow-hidden px-4 pb-4 pt-4 md:px-6 md:pb-6">
+      <CardContent className="relative z-10 flex min-h-0 flex-1 flex-col px-4 pb-4 pt-4 md:px-6 md:pb-6">
         {hasItems ? (
           <div className="flex h-full flex-col overflow-hidden rounded-[24px] border border-white/8 bg-black/18">
             {latestItem ? (
@@ -109,7 +117,7 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
               </div>
             ) : null}
 
-            <div className="scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent flex-1 overflow-y-auto px-5 py-5 md:px-6">
+            <ScrollArea className="min-h-0 flex-1 px-5 py-5 md:px-6">
               <div className="relative ml-2.5 space-y-5 border-l border-white/10 py-2 pl-5 md:pl-6">
                 {items.map((item) => {
                   const tone = toneMap[item.tone]
@@ -144,7 +152,7 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
                   )
                 })}
               </div>
-            </div>
+            </ScrollArea>
           </div>
         ) : (
           <div className="flex h-full min-h-[360px] flex-col items-center justify-center rounded-[24px] border border-dashed border-white/10 bg-black/18 p-8 text-center">
@@ -157,7 +165,7 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
             </p>
           </div>
         )}
-      </div>
-    </section>
+      </CardContent>
+    </Card>
   )
 }

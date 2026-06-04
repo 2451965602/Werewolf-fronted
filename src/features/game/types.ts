@@ -61,6 +61,12 @@ export interface HeroBannerContent {
 
 export interface GameViewModel {
   screenMode: "pregame" | "console"
+  currentGameSummary: {
+    round: number
+    phaseLabel: string
+    aliveCount: number
+    winnerLabel: string
+  } | null
   isInitialized: boolean
   currentRound: number
   phaseVariant: "idle" | ApiPhase

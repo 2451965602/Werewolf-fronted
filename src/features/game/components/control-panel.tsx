@@ -8,7 +8,7 @@ interface ControlPanelProps {
   }
   isInitialized: boolean
   onRefresh: () => Promise<void>
-  onStart: () => Promise<void>
+  onStart: () => Promise<void | boolean>
   onAdvance: () => Promise<void>
 }
 

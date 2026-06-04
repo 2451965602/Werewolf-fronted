@@ -85,6 +85,12 @@ describe("buildGameViewModel", () => {
       supporting: "狼人请睁眼并选择目标。",
     })
     expect(viewModel.summary.currentRound).toBe(1)
+    expect(viewModel.currentGameSummary).toEqual({
+      round: 1,
+      phaseLabel: "夜晚",
+      aliveCount: 1,
+      winnerLabel: "",
+    })
     expect(viewModel.summary.phaseLabel).toBe("夜晚")
     expect(viewModel.summary.aliveCount).toBe(1)
     expect(viewModel.summary.deadCount).toBe(1)
@@ -131,6 +137,7 @@ describe("buildGameViewModel", () => {
         phase: "day",
       },
     ])
+    expect(viewModel.timeline[1]?.tone).toBe("vote")
   })
 
   it("maps winner label when game has ended", () => {
@@ -192,6 +199,7 @@ describe("createUninitializedViewModel", () => {
     expect(viewModel.isInitialized).toBe(false)
     expect(viewModel.screenMode).toBe("pregame")
     expect(viewModel.currentRound).toBe(0)
+    expect(viewModel.currentGameSummary).toBeNull()
     expect(viewModel.phaseVariant).toBe("idle")
     expect(viewModel.serviceHealth).toEqual({
       label: "等待服务连接",

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useGameConsole } from "./features/game/use-game-console"
 import { GameShell } from "./features/game/components/game-shell"
 import { PhaseHero } from "./features/game/components/phase-hero"
@@ -12,18 +12,33 @@ import { PreGameScreen } from "./features/game/components/pre-game-screen"
 
 export function App() {
   const { viewModel, requestState, refresh, start, advance } = useGameConsole()
+  const [entryMode, setEntryMode] = useState<"lobby" | "console">("lobby")
+  const isConsoleReady =
+    entryMode === "console" && viewModel.screenMode === "console"
 
   useEffect(() => {
     void refresh()
   }, [refresh])
 
-  if (viewModel.screenMode === "pregame") {
+  if (!isConsoleReady) {
     return (
       <PreGameScreen
         heroIntro={viewModel.heroIntro}
         serviceHealth={viewModel.serviceHealth}
         requestState={requestState}
-        onStart={start}
+        currentGameSummary={viewModel.currentGameSummary}
+        onContinue={async () => {
+          setEntryMode("console")
+        }}
+        onStart={async () => {
+          const didStart = await start()
+
+          if (didStart) {
+            setEntryMode("console")
+          } else {
+            setEntryMode("lobby")
+          }
+        }}
         onRefresh={refresh}
       />
     )
@@ -48,7 +63,7 @@ export function App() {
         />
       }
       sideRail={
-        <div className="space-y-6">
+        <div className="flex flex-col gap-4">
           <ControlPanel
             requestState={requestState}
             isInitialized={viewModel.isInitialized}
@@ -64,7 +79,7 @@ export function App() {
         </div>
       }
       situation={
-        <div className="space-y-6">
+        <div className="grid gap-4 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
           <RoleSpotlight spotlight={viewModel.roleSpotlight} />
           <PlayerGrid players={viewModel.players} />
         </div>

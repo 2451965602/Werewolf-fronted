@@ -1,7 +1,11 @@
 import type { GameViewModel } from "./features/game/types"
 import { createUninitializedViewModel } from "./features/game/view-model"
+import { act } from "react"
+import { createRoot } from "react-dom/client"
 import { renderToStaticMarkup } from "react-dom/server"
 import { beforeEach, describe, expect, it, vi } from "vitest"
+
+;(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
 const { useGameConsoleMock } = vi.hoisted(() => ({
   useGameConsoleMock: vi.fn(),
@@ -12,7 +16,13 @@ vi.mock("./features/game/use-game-console", () => ({
 }))
 
 vi.mock("./features/game/components/pre-game-screen", () => ({
-  PreGameScreen: () => <div>PreGameScreen Stub</div>,
+  PreGameScreen: ({ onContinue, onStart, currentGameSummary }: { onContinue?: () => Promise<void>; onStart: () => Promise<void>; currentGameSummary?: GameViewModel["currentGameSummary"] }) => (
+    <div>
+      <span>PreGameScreen Stub</span>
+      {currentGameSummary ? <button onClick={() => void onContinue?.()}>继续当前对局</button> : null}
+      <button onClick={() => void onStart()}>开始游戏</button>
+    </div>
+  ),
 }))
 
 vi.mock("./features/game/components/phase-hero", () => ({
@@ -66,6 +76,12 @@ function makeConsoleViewModel(): GameViewModel {
   return {
     ...createUninitializedViewModel(),
     screenMode: "console",
+    currentGameSummary: {
+      round: 3,
+      phaseLabel: "白天",
+      aliveCount: 6,
+      winnerLabel: "",
+    },
     isInitialized: true,
     currentRound: 3,
     phaseVariant: "day",
@@ -88,6 +104,12 @@ function makeConsoleViewModel(): GameViewModel {
   }
 }
 
+function findButtonByText(container: HTMLElement, text: string) {
+  return Array.from(container.querySelectorAll("button")).find(
+    (button) => button.textContent === text,
+  )
+}
+
 describe("App", () => {
   beforeEach(() => {
     useGameConsoleMock.mockReset()
@@ -108,27 +130,125 @@ describe("App", () => {
     expect(html).not.toContain('aria-label="banner"')
   })
 
-  it("renders the game shell layout when screen mode is console", () => {
-    useGameConsoleMock.mockReturnValue({
-      viewModel: makeConsoleViewModel(),
+  it("stays on lobby when an active game already exists until continue is clicked", async () => {
+    const currentViewModel = makeConsoleViewModel()
+
+    useGameConsoleMock.mockImplementation(() => ({
+      viewModel: currentViewModel,
       requestState: makeRequestState(),
       refresh: vi.fn(),
       start: vi.fn(),
       advance: vi.fn(),
-    })
+    }))
 
     const html = renderToStaticMarkup(<App />)
 
-    expect(html).toContain('aria-label="banner"')
-    expect(html).toContain('aria-label="main log"')
-    expect(html).toContain('aria-label="side rail"')
-    expect(html).toContain('aria-label="situation"')
-    expect(html).toContain("PhaseHero Stub")
-    expect(html).toContain("NarrativeLog Stub")
-    expect(html).toContain("ControlPanel Stub")
-    expect(html).toContain("GameSummary Stub")
-    expect(html).toContain("StatusStrip Stub")
-    expect(html).toContain("RoleSpotlight Stub")
-    expect(html).toContain("PlayerGrid Stub")
+    expect(html).toContain("PreGameScreen Stub")
+    expect(html).not.toContain('aria-label="main log"')
+
+    const container = document.createElement("div")
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<App />)
+    })
+
+    await act(async () => {
+      findButtonByText(container, "继续当前对局")?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true }),
+      )
+    })
+
+    expect(container.innerHTML).toContain('aria-label="banner"')
+    expect(container.innerHTML).toContain('aria-label="main log"')
+    expect(container.innerHTML).toContain('aria-label="side rail"')
+    expect(container.innerHTML).toContain('aria-label="situation"')
+    expect(container.innerHTML).toContain("PhaseHero Stub")
+    expect(container.innerHTML).toContain("NarrativeLog Stub")
+    expect(container.innerHTML).toContain("ControlPanel Stub")
+    expect(container.innerHTML).toContain("GameSummary Stub")
+    expect(container.innerHTML).toContain("StatusStrip Stub")
+    expect(container.innerHTML).toContain("RoleSpotlight Stub")
+    expect(container.innerHTML).toContain("PlayerGrid Stub")
+
+    await act(async () => {
+      root.unmount()
+    })
+    container.remove()
+  })
+
+  it("switches to console after start succeeds", async () => {
+    let currentViewModel: GameViewModel = createUninitializedViewModel()
+    const start = vi.fn().mockImplementation(async () => {
+      currentViewModel = makeConsoleViewModel()
+      return true
+    })
+
+    useGameConsoleMock.mockImplementation(() => ({
+      viewModel: currentViewModel,
+      requestState: makeRequestState(),
+      refresh: vi.fn(),
+      start,
+      advance: vi.fn(),
+    }))
+
+    const container = document.createElement("div")
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<App />)
+    })
+
+    await act(async () => {
+      findButtonByText(container, "开始游戏")?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true }),
+      )
+    })
+
+    expect(start).toHaveBeenCalledTimes(1)
+    expect(container.innerHTML).toContain("GameSummary Stub")
+
+    await act(async () => {
+      root.unmount()
+    })
+    container.remove()
+  })
+
+  it("stays on lobby when start fails", async () => {
+    const start = vi.fn().mockResolvedValue(false)
+
+    useGameConsoleMock.mockImplementation(() => ({
+      viewModel: createUninitializedViewModel(),
+      requestState: makeRequestState(),
+      refresh: vi.fn(),
+      start,
+      advance: vi.fn(),
+    }))
+
+    const container = document.createElement("div")
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<App />)
+    })
+
+    await act(async () => {
+      findButtonByText(container, "开始游戏")?.dispatchEvent(
+        new MouseEvent("click", { bubbles: true }),
+      )
+      await Promise.resolve()
+    })
+
+    expect(start).toHaveBeenCalledTimes(1)
+    expect(container.innerHTML).toContain("PreGameScreen Stub")
+    expect(container.innerHTML).not.toContain("GameSummary Stub")
+
+    await act(async () => {
+      root.unmount()
+    })
+    container.remove()
   })
 })
