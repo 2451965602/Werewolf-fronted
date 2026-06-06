@@ -34,10 +34,12 @@ describe("SeatRing", () => {
     )
 
     expect(html).toContain("Central Narrative Stage")
-    expect(html).toContain("left:")
-    expect(html).toContain("top:")
+    expect(html).toContain("圆桌席位态势")
     expect(html).toContain("1号 · 预言家 · 存活")
     expect(html).not.toContain("李明")
+    expect(html).not.toContain("absolute inset-0")
+    expect(html).toContain("min-h-0")
+    expect(html).toContain("overflow-hidden")
   })
 
   it("renders a clear empty state when there are no seats", () => {

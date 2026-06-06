@@ -63,6 +63,8 @@ export interface SpeechLedgerItem {
 
 export interface SpeechLedger {
   count: number
+  sourceRound: number | null
+  isFallback: boolean
   latestSpeaker: string | null
   items: SpeechLedgerItem[]
 }

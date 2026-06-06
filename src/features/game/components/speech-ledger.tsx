@@ -9,6 +9,12 @@ interface SpeechLedgerProps {
 
 export function SpeechLedger({ ledger }: SpeechLedgerProps) {
   const hasItems = ledger.items && ledger.items.length > 0
+  const title = ledger.isFallback ? "最近发言账册" : "本轮发言账册"
+  const description = ledger.latestSpeaker
+    ? ledger.isFallback && ledger.sourceRound != null
+      ? `展示第 ${ledger.sourceRound} 轮最近发言 · 最新发言: ${ledger.latestSpeaker}`
+      : `最新发言: ${ledger.latestSpeaker}`
+    : "等待本轮首位玩家发言..."
 
   return (
     <Card className="flex flex-col h-[320px] lg:h-[480px] bg-zinc-950/20 backdrop-blur-md border-zinc-800/60 shadow-lg overflow-hidden">
@@ -16,20 +22,14 @@ export function SpeechLedger({ ledger }: SpeechLedgerProps) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-semibold tracking-wider text-muted-foreground uppercase flex items-center gap-2">
             <span className="inline-block size-2 rounded-full bg-violet-400 animate-pulse" />
-            本轮发言账册
+            {title}
           </CardTitle>
           <Badge variant="outline" className="bg-violet-950/20 text-violet-300 border-violet-500/20 text-[10px] h-4.5 px-1.5 font-bold">
             {ledger.count} 条记录
           </Badge>
         </div>
         <CardDescription className="text-xs text-zinc-400 mt-1 truncate">
-          {ledger.latestSpeaker ? (
-            <span>
-              最新发言: <strong className="text-zinc-200">{ledger.latestSpeaker}</strong>
-            </span>
-          ) : (
-            "等待本轮首位玩家发言..."
-          )}
+          {description}
         </CardDescription>
       </CardHeader>
 
@@ -81,7 +81,7 @@ export function SpeechLedger({ ledger }: SpeechLedgerProps) {
               💭
             </div>
             <p className="text-xs text-zinc-500">本回合暂无玩家发言</p>
-            <p className="text-[10px] text-zinc-600 mt-1">切换到白天阶段后，玩家发言将自动记录于此</p>
+            <p className="text-[10px] text-zinc-600 mt-1">如果上一轮已有发言，系统会自动回退展示最近一轮发言记录</p>
           </div>
         )}
       </CardContent>

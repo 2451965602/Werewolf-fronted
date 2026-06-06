@@ -211,6 +211,8 @@ describe("buildGameViewModel", () => {
 
     expect(viewModel.speechLedger).toEqual({
       count: 2,
+      sourceRound: 3,
+      isFallback: false,
       latestSpeaker: "陈静",
       items: [
         {
@@ -225,6 +227,64 @@ describe("buildGameViewModel", () => {
           speaker: "陈静",
           content: "我也支持先从发言看。",
           round: 3,
+          phase: "day",
+        },
+      ],
+    })
+  })
+
+  it("falls back to the latest available player speech when the current round has none", () => {
+    const viewModel = buildGameViewModel(
+      makeState({
+        round: 2,
+        phase: "night",
+      }),
+      [
+        makeMessage({
+          speakerId: 1,
+          speaker: "李明",
+          content: "上一轮我先发言。",
+          phase: "day",
+          round: 1,
+          type: "player",
+        }),
+        makeMessage({
+          speakerId: 2,
+          speaker: "王芳",
+          content: "上一轮我补充一点。",
+          phase: "day",
+          round: 1,
+          type: "player",
+        }),
+        makeMessage({
+          speakerId: 0,
+          speaker: "系统",
+          content: "1号李明被放逐。",
+          phase: "day",
+          round: 2,
+          type: "vote",
+        }),
+      ],
+    )
+
+    expect(viewModel.speechLedger).toEqual({
+      count: 2,
+      sourceRound: 1,
+      isFallback: true,
+      latestSpeaker: "王芳",
+      items: [
+        {
+          id: "1-day-1-player-0",
+          speaker: "李明",
+          content: "上一轮我先发言。",
+          round: 1,
+          phase: "day",
+        },
+        {
+          id: "1-day-2-player-1",
+          speaker: "王芳",
+          content: "上一轮我补充一点。",
+          round: 1,
           phase: "day",
         },
       ],

@@ -1,0 +1,17 @@
+workflow: full
+phase: build
+build_mode: subagent-driven-development
+isolation: branch
+verify_mode: null
+base_ref: 0e819bca54701a599edba24306ed3f768d74c559
+design_doc: docs/superpowers/specs/2026-06-06-fix-ui-overlap-design.md
+plan: docs/superpowers/plans/2026-06-06-fix-ui-overlap.md
+verify_result: pending
+verification_report: null
+branch_status: pending
+created_at: 2026-06-05
+verified_at: null
+archived: false
+handoff_context: openspec/changes/fix-ui-overlap/.comet/handoff/design-context.json
+handoff_hash: ebd5540f3adb41ec57eec3702df2d004fc16aa1989c9f8f3e57d50fa1c2784c0
+build_pause: null

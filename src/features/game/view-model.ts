@@ -128,6 +128,8 @@ export function createUninitializedViewModel(): GameViewModel {
     players: [],
     speechLedger: {
       count: 0,
+      sourceRound: null,
+      isFallback: false,
       latestSpeaker: null,
       items: [],
     },
@@ -346,11 +348,28 @@ function buildSpeechLedger(
   state: ApiGameState,
   messages: ApiMessage[]
 ): SpeechLedger {
-  const items = messages
-    .filter(
-      (message) =>
-        message.round === state.round && message.type === "player"
-    )
+  const playerMessages = messages.filter((message) => message.type === "player")
+  const currentRoundMessages = playerMessages.filter(
+    (message) => message.round === state.round
+  )
+  const fallbackRound = playerMessages.reduce<number | null>((latestRound, message) => {
+    if (message.round > state.round) {
+      return latestRound
+    }
+
+    if (latestRound == null || message.round > latestRound) {
+      return message.round
+    }
+
+    return latestRound
+  }, null)
+  const scopedMessages =
+    currentRoundMessages.length > 0
+      ? currentRoundMessages
+      : fallbackRound == null
+        ? []
+        : playerMessages.filter((message) => message.round === fallbackRound)
+  const items = scopedMessages
     .map((message, index): SpeechLedgerItem => ({
       id: `${message.round}-${message.phase}-${message.speakerId}-${message.type}-${index}`,
       speaker: message.speaker,
@@ -361,6 +380,8 @@ function buildSpeechLedger(
 
   return {
     count: items.length,
+    sourceRound: items[0]?.round ?? null,
+    isFallback: currentRoundMessages.length === 0 && items.length > 0,
     latestSpeaker: items.at(-1)?.speaker ?? null,
     items,
   }
