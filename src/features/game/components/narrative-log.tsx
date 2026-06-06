@@ -63,8 +63,8 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
   return (
     <Card className="relative flex h-full min-h-[480px] flex-col overflow-hidden border-border/60 bg-[linear-gradient(180deg,rgba(24,24,27,0.92),rgba(9,9,11,0.94))] shadow-[0_24px_80px_rgba(0,0,0,0.24)] lg:min-h-0">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(251,191,36,0.08),_transparent_40%)]" />
-      <CardHeader className="relative z-10 border-b border-white/8">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+      <CardHeader className="relative z-10 border-b border-white/8 p-4 md:p-5 lg:p-4">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
           <div className="max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
               <Badge variant="outline">主舞台</Badge>
@@ -78,8 +78,8 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
             </CardDescription>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-[auto_auto] xl:min-w-[360px]">
-            <div className="rounded-[18px] border border-white/8 bg-white/5 px-4 py-3">
+          <div className="grid gap-2 sm:grid-cols-[auto_auto] xl:min-w-[320px]">
+            <div className="rounded-[18px] border border-white/8 bg-white/5 px-3 py-2">
               <span className="text-[11px] tracking-[0.2em] text-white/45 uppercase">
                 记录总数
               </span>
@@ -88,7 +88,7 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
               </div>
             </div>
 
-            <div className="rounded-[18px] border border-white/8 bg-white/5 px-4 py-3">
+            <div className="rounded-[18px] border border-white/8 bg-white/5 px-3 py-2">
               <span className="text-[11px] tracking-[0.2em] text-white/45 uppercase">
                 最新焦点
               </span>
@@ -102,7 +102,7 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="relative z-10 flex min-h-0 flex-1 flex-col px-4 pb-4 pt-4 md:px-6 md:pb-6">
+      <CardContent className="relative z-10 flex min-h-0 flex-1 flex-col px-4 pb-4 pt-3 md:px-5 md:pb-5 lg:p-4">
         {hasItems ? (
           <div className="flex h-full flex-col overflow-hidden rounded-[24px] border border-white/8 bg-black/18">
             {latestItem ? (
@@ -125,7 +125,7 @@ export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
               </div>
             ) : null}
 
-            <ScrollArea className="min-h-0 flex-1 px-5 py-5 md:px-6">
+            <ScrollArea className="timeline-history-scroll min-h-0 flex-1 px-4 py-4 md:px-5">
               <div className="relative ml-2.5 space-y-5 border-l border-white/10 py-2 pl-5 md:pl-6">
                 {items.map((item) => {
                   const tone = toneMap[item.tone]

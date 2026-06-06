@@ -17,8 +17,8 @@ export function SpeechLedger({ ledger }: SpeechLedgerProps) {
     : "等待本轮首位玩家发言..."
 
   return (
-    <Card className="flex h-[320px] flex-col overflow-hidden border-zinc-800/60 bg-zinc-950/20 shadow-lg backdrop-blur-md lg:h-auto lg:min-h-0 lg:flex-1">
-      <CardHeader className="pb-3 border-b border-zinc-900/50">
+    <Card className="flex h-[320px] flex-col overflow-hidden border-zinc-800/60 bg-zinc-950/20 shadow-lg backdrop-blur-md lg:h-auto lg:min-h-[220px] lg:flex-[1_1_0]">
+      <CardHeader className="border-b border-zinc-900/50 pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-semibold tracking-wider text-muted-foreground uppercase flex items-center gap-2">
             <span className="inline-block size-2 rounded-full bg-violet-400 animate-pulse" />
@@ -33,9 +33,9 @@ export function SpeechLedger({ ledger }: SpeechLedgerProps) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="flex-1 p-0 min-h-0">
+      <CardContent className="min-h-0 flex-1 p-0">
         {hasItems ? (
-          <ScrollArea className="h-full w-full">
+          <ScrollArea className="latest-speech-scroll h-full w-full">
             <div className="p-4 space-y-3.5 pr-5">
               {ledger.items.map((item) => (
                 <div

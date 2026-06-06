@@ -48,4 +48,31 @@ describe("NarrativeLog", () => {
       html.indexOf("1号投给3号。"),
     )
   })
+
+  it("keeps the current focus visible before the historical list scrolls", () => {
+    const html = renderToStaticMarkup(
+      <NarrativeLog
+        items={[
+          {
+            id: "latest",
+            tone: "player",
+            speaker: "3号玩家",
+            content: "我现在重点怀疑 5 号。",
+            round: 2,
+            phase: "day",
+          },
+        ]}
+        emptyState={{ title: "暂无记录", description: "等待开局" }}
+      />,
+    )
+
+    expect(html).toContain("当前镜头")
+    expect(html).toContain("我现在重点怀疑 5 号。")
+    expect(html).toContain("lg:min-h-0")
+    expect(html).toContain("lg:p-4")
+    expect(html).toContain("timeline-history-scroll")
+    expect(html.indexOf("当前镜头")).toBeLessThan(
+      html.indexOf("timeline-history-scroll"),
+    )
+  })
 })
