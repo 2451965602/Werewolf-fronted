@@ -65,7 +65,7 @@ export function App() {
         </SeatRing>
       }
       sideRail={
-        <div className="flex h-full min-h-0 flex-col gap-4">
+        <div className="side-rail-stack flex h-full min-h-0 flex-col gap-3 overflow-hidden">
           <SpeechLedger ledger={viewModel.speechLedger} />
           <GameSummary summary={viewModel.summary} />
           <StatusStrip
@@ -75,7 +75,7 @@ export function App() {
         </div>
       }
       situation={
-        <div className="grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)] xl:items-start">
+        <div className="game-situation-grid grid h-full min-h-0 gap-4 xl:grid-cols-[300px_minmax(0,1fr)] xl:items-stretch">
           <RoleSpotlight spotlight={viewModel.roleSpotlight} />
           <PlayerGrid players={viewModel.players} />
         </div>
