@@ -12,9 +12,9 @@
 
 ## 3. 1920x1080 Layout Fit
 
-- [ ] 3.1 Adjust `GameShell` desktop layout to use a bounded 1920x1080-friendly viewport budget with stable grid/flex rows.
-- [ ] 3.2 Tune `NarrativeLog`, `SpeechLedger`, summary, and situation region heights/gaps so primary content is visible without default page scrolling at 1920x1080.
-- [ ] 3.3 Keep mobile and smaller desktop layouts readable with normal vertical flow where the 1920x1080 budget does not apply.
+- [x] 3.1 Adjust `GameShell` desktop layout to use a bounded 1920x1080-friendly viewport budget with stable grid/flex rows.
+- [x] 3.2 Tune `NarrativeLog`, `SpeechLedger`, summary, and situation region heights/gaps so primary content is visible without default page scrolling at 1920x1080.
+- [x] 3.3 Keep mobile and smaller desktop layouts readable with normal vertical flow where the 1920x1080 budget does not apply.
 
 ## 4. Verification
 
