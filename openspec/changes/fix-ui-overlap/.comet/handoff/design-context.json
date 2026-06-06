@@ -1,0 +1,14 @@
+{
+  "change": "fix-ui-overlap",
+  "phase": "design",
+  "mode": "compact",
+  "canonical_spec": "openspec",
+  "generated_by": "comet-handoff.sh",
+  "context_hash": "ebd5540f3adb41ec57eec3702df2d004fc16aa1989c9f8f3e57d50fa1c2784c0",
+  "files": [
+    { "path": "openspec/changes/fix-ui-overlap/proposal.md", "sha256": "a8877ba13e5840f1dd31641d3dd8fdd180fab03708346341ddbf795230ad8484" },
+    { "path": "openspec/changes/fix-ui-overlap/design.md", "sha256": "a4bd31bcb2b4c8730983d273e7c64ce618c15a6c1dfedabd4f42946d2357f951" },
+    { "path": "openspec/changes/fix-ui-overlap/tasks.md", "sha256": "8aa7b8e8567c310546dc08af07293a1b702f1758c753333c22049ced26f191b6" },
+    { "path": "openspec/changes/fix-ui-overlap/specs/werewolf-web-frontend/spec.md", "sha256": "ed97a95b6a55792be89d081cabc6cb8584f4b6e947f85ee0f9636ad700282c17" }
+  ]
+}

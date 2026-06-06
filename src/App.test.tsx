@@ -25,8 +25,21 @@ vi.mock("./features/game/components/pre-game-screen", () => ({
   ),
 }))
 
-vi.mock("./features/game/components/phase-hero", () => ({
-  PhaseHero: () => <div>PhaseHero Stub</div>,
+vi.mock("./features/game/components/stage-status-strip", () => ({
+  StageStatusStrip: () => <div>StageStatusStrip Stub</div>,
+}))
+
+vi.mock("./features/game/components/speech-ledger", () => ({
+  SpeechLedger: () => <div>SpeechLedger Stub</div>,
+}))
+
+vi.mock("./features/game/components/seat-ring", () => ({
+  SeatRing: ({ children }: { children?: React.ReactNode }) => (
+    <div>
+      <span>SeatRing Stub</span>
+      {children}
+    </div>
+  ),
 }))
 
 vi.mock("./features/game/components/narrative-log", () => ({
@@ -164,8 +177,10 @@ describe("App", () => {
     expect(container.innerHTML).toContain('aria-label="main log"')
     expect(container.innerHTML).toContain('aria-label="side rail"')
     expect(container.innerHTML).toContain('aria-label="situation"')
-    expect(container.innerHTML).toContain("PhaseHero Stub")
+    expect(container.innerHTML).toContain("StageStatusStrip Stub")
     expect(container.innerHTML).toContain("NarrativeLog Stub")
+    expect(container.innerHTML).toContain("SpeechLedger Stub")
+    expect(container.innerHTML).toContain("SeatRing Stub")
     expect(container.innerHTML).toContain("ControlPanel Stub")
     expect(container.innerHTML).toContain("GameSummary Stub")
     expect(container.innerHTML).toContain("StatusStrip Stub")

@@ -4,6 +4,9 @@ import type {
   ApiPhase,
   ApiWinner,
   GameViewModel,
+  SeatRingItem,
+  SpeechLedger,
+  SpeechLedgerItem,
   TimelineItem,
 } from "./types"
 
@@ -27,6 +30,8 @@ export function buildGameViewModel(
           ?.name ?? null)
       : null
   const latestRelevantMessage = pickLatestRelevantMessage(state, messages)
+  const speechLedger = buildSpeechLedger(state, messages)
+  const seatRing = buildSeatRing(state)
   const heroBanner = buildHeroBanner({
     round: state.round,
     phase: resolvedPhase,
@@ -72,6 +77,8 @@ export function buildGameViewModel(
       primaryActionLabel: "开始游戏",
     },
     players: state.players,
+    speechLedger,
+    seatRing,
     summary: {
       currentRound: state.round,
       phaseLabel,
@@ -119,6 +126,14 @@ export function createUninitializedViewModel(): GameViewModel {
       primaryActionLabel: "开始游戏",
     },
     players: [],
+    speechLedger: {
+      count: 0,
+      sourceRound: null,
+      isFallback: false,
+      latestSpeaker: null,
+      items: [],
+    },
+    seatRing: [],
     summary: {
       currentRound: 0,
       phaseLabel: "未开局",
@@ -329,8 +344,63 @@ function mapTimelineItem(message: ApiMessage, index: number): TimelineItem {
   }
 }
 
+function buildSpeechLedger(
+  state: ApiGameState,
+  messages: ApiMessage[]
+): SpeechLedger {
+  const playerMessages = messages.filter((message) => message.type === "player")
+  const currentRoundMessages = playerMessages.filter(
+    (message) => message.round === state.round
+  )
+  const fallbackRound = playerMessages.reduce<number | null>((latestRound, message) => {
+    if (message.round > state.round) {
+      return latestRound
+    }
+
+    if (latestRound == null || message.round > latestRound) {
+      return message.round
+    }
+
+    return latestRound
+  }, null)
+  const scopedMessages =
+    currentRoundMessages.length > 0
+      ? currentRoundMessages
+      : fallbackRound == null
+        ? []
+        : playerMessages.filter((message) => message.round === fallbackRound)
+  const items = scopedMessages
+    .map((message, index): SpeechLedgerItem => ({
+      id: `${message.round}-${message.phase}-${message.speakerId}-${message.type}-${index}`,
+      speaker: message.speaker,
+      content: message.content,
+      round: message.round,
+      phase: message.phase,
+    }))
+
+  return {
+    count: items.length,
+    sourceRound: items[0]?.round ?? null,
+    isFallback: currentRoundMessages.length === 0 && items.length > 0,
+    latestSpeaker: items.at(-1)?.speaker ?? null,
+    items,
+  }
+}
+
+function buildSeatRing(state: ApiGameState): SeatRingItem[] {
+  return state.players.map((player) => ({
+    seat: player.id,
+    name: player.name,
+    role: player.role,
+    alive: player.alive,
+    team: player.team,
+  }))
+}
+
 function mapMessageTone(type: ApiMessage["type"]): TimelineItem["tone"] {
   switch (type) {
+    case "narrator":
+      return "narrator"
     case "player":
       return "player"
     case "vote":
