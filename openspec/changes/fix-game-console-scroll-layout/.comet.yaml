@@ -1,0 +1,17 @@
+workflow: full
+phase: build
+build_mode: subagent-driven-development
+build_pause: null
+isolation: branch
+verify_mode: null
+base_ref: 52c710577bd331f533e31788dff6bfa567945df9
+design_doc: docs/superpowers/specs/2026-06-06-fix-game-console-scroll-layout-design.md
+plan: docs/superpowers/plans/2026-06-06-fix-game-console-scroll-layout.md
+verify_result: pending
+verification_report: null
+branch_status: pending
+created_at: 2026-06-06
+verified_at: null
+archived: false
+handoff_context: openspec/changes/fix-game-console-scroll-layout/.comet/handoff/design-context.json
+handoff_hash: 1d6347e93b6e334b69875c197e04cde2c05034c2b0ad3e52920c396aff6aa437

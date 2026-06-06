@@ -1,0 +1,14 @@
+{
+  "change": "fix-game-console-scroll-layout",
+  "phase": "design",
+  "mode": "compact",
+  "canonical_spec": "openspec",
+  "generated_by": "comet-handoff.sh",
+  "context_hash": "1d6347e93b6e334b69875c197e04cde2c05034c2b0ad3e52920c396aff6aa437",
+  "files": [
+    { "path": "openspec/changes/fix-game-console-scroll-layout/proposal.md", "sha256": "b22fcc97de975099806e26443d9d9ba4d738dc42c0fa41622ec727a664570076" },
+    { "path": "openspec/changes/fix-game-console-scroll-layout/design.md", "sha256": "fa17139c29599fcef132d63cba8cb321e49dfc12b2d95720fbed3b3a944f2514" },
+    { "path": "openspec/changes/fix-game-console-scroll-layout/tasks.md", "sha256": "3dcf5586e54474ec126d093b976291627da7376197b2fc92362e5c5e3068618b" },
+    { "path": "openspec/changes/fix-game-console-scroll-layout/specs/werewolf-web-frontend/spec.md", "sha256": "60814358575f4387bc7dc1fabf2e03ad1d64b772b6ad91a9487745eab7ff336f" }
+  ]
+}
