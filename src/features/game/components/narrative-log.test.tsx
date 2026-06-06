@@ -9,12 +9,12 @@ describe("NarrativeLog", () => {
       <NarrativeLog
         items={[
           {
-            id: "1",
-            tone: "player",
-            speaker: "1号玩家",
-            content: "我先发言。",
+            id: "3",
+            tone: "narrator",
+            speaker: "旁白",
+            content: "夜幕降临，请闭眼。",
             round: 1,
-            phase: "day",
+            phase: "night",
           },
           {
             id: "2",
@@ -25,12 +25,12 @@ describe("NarrativeLog", () => {
             phase: "day",
           },
           {
-            id: "3",
-            tone: "narrator",
-            speaker: "旁白",
-            content: "夜幕降临，请闭眼。",
+            id: "1",
+            tone: "player",
+            speaker: "1号玩家",
+            content: "我先发言。",
             round: 1,
-            phase: "night",
+            phase: "day",
           },
         ]}
         emptyState={{ title: "暂无记录", description: "等待开局" }}
@@ -41,5 +41,11 @@ describe("NarrativeLog", () => {
     expect(html).toContain("投票")
     expect(html).toContain("旁白")
     expect(html).toContain("1号投给3号。")
+    expect(html.indexOf("夜幕降临，请闭眼。")).toBeLessThan(
+      html.indexOf("我先发言。"),
+    )
+    expect(html.indexOf("夜幕降临，请闭眼。")).toBeLessThan(
+      html.indexOf("1号投给3号。"),
+    )
   })
 })

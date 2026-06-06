@@ -1,8 +1,8 @@
 ## 1. Data Ordering
 
-- [ ] 1.1 Update `view-model.ts` so `timeline` is derived with newest records first while preserving latest-focus metadata.
-- [ ] 1.2 Update `buildSpeechLedger` so current-round and fallback speech records are returned newest first.
-- [ ] 1.3 Update view-model tests to assert newest-first timeline and speech ledger ordering.
+- [x] 1.1 Update `view-model.ts` so `timeline` is derived with newest records first while preserving latest-focus metadata.
+- [x] 1.2 Update `buildSpeechLedger` so current-round and fallback speech records are returned newest first.
+- [x] 1.3 Update view-model tests to assert newest-first timeline and speech ledger ordering.
 
 ## 2. Console Simplification
 

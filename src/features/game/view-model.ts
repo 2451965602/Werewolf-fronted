@@ -89,7 +89,9 @@ export function buildGameViewModel(
       lastNightKilled: state.lastNightKilled ?? null,
       lastNightKilledPlayer,
     },
-    timeline: messages.map((message, index) => mapTimelineItem(message, index)),
+    timeline: newestFirst(
+      messages.map((message, index) => mapTimelineItem(message, index))
+    ),
     emptyState: {
       title: "点击开始游戏以初始化狼人杀演示台",
       description: "开局后，这里会显示阶段推进、系统播报和玩家发言时间线。",
@@ -344,6 +346,10 @@ function mapTimelineItem(message: ApiMessage, index: number): TimelineItem {
   }
 }
 
+function newestFirst<T>(items: T[]): T[] {
+  return [...items].reverse()
+}
+
 function buildSpeechLedger(
   state: ApiGameState,
   messages: ApiMessage[]
@@ -369,20 +375,21 @@ function buildSpeechLedger(
       : fallbackRound == null
         ? []
         : playerMessages.filter((message) => message.round === fallbackRound)
-  const items = scopedMessages
-    .map((message, index): SpeechLedgerItem => ({
+  const items = newestFirst(
+    scopedMessages.map((message, index): SpeechLedgerItem => ({
       id: `${message.round}-${message.phase}-${message.speakerId}-${message.type}-${index}`,
       speaker: message.speaker,
       content: message.content,
       round: message.round,
       phase: message.phase,
     }))
+  )
 
   return {
     count: items.length,
     sourceRound: items[0]?.round ?? null,
     isFallback: currentRoundMessages.length === 0 && items.length > 0,
-    latestSpeaker: items.at(-1)?.speaker ?? null,
+    latestSpeaker: items[0]?.speaker ?? null,
     items,
   }
 }
