@@ -12,7 +12,7 @@ export function PlayerGrid({ players }: PlayerGridProps) {
   const wolfCount = players.filter((player) => player.team === "wolf").length
 
   return (
-    <section className="rounded-[28px] border border-border/50 bg-card/30 p-5 backdrop-blur-md">
+    <section className="guest-seat-card flex min-h-0 flex-col rounded-[20px] border border-border/50 bg-card/30 p-4 backdrop-blur-md xl:h-full">
       <div className="flex flex-col gap-4 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
         <div>
           <div className="flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-muted-foreground/70">
@@ -44,13 +44,15 @@ export function PlayerGrid({ players }: PlayerGridProps) {
       </div>
 
       {hasPlayers ? (
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-8">
-          {players.map((player) => (
-            <PlayerCard key={player.id} player={player} />
-          ))}
+        <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-1">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8">
+            {players.map((player) => (
+              <PlayerCard key={player.id} player={player} />
+            ))}
+          </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-[24px] border border-dashed border-white/10 bg-black/15 py-12 text-center text-muted-foreground">
+        <div className="mt-4 flex min-h-0 flex-1 flex-col items-center justify-center rounded-[24px] border border-dashed border-white/10 bg-black/15 py-10 text-center text-muted-foreground">
           <span className="mb-2 text-3xl opacity-50">🕯️</span>
           <p className="text-sm">
             等待牌局启动后，这里会按席位展开所有玩家的身份总览。

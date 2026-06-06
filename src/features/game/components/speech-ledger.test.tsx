@@ -22,6 +22,9 @@ describe("SpeechLedger", () => {
     expect(html).toContain("本轮发言账册")
     expect(html).toContain("王芳")
     expect(html).toContain("我同意继续观察。")
+    expect(html).toContain("latest-speech-scroll")
+    expect(html).toContain("lg:min-h-[220px]")
+    expect(html).toContain("lg:flex-[1_1_0]")
     expect(html.indexOf("我同意继续观察。")).toBeLessThan(
       html.indexOf("先听大家。"),
     )

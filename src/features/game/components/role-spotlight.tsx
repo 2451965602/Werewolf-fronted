@@ -10,7 +10,7 @@ interface RoleSpotlightProps {
 
 export function RoleSpotlight({ spotlight }: RoleSpotlightProps) {
   return (
-    <section className="rounded-[24px] border border-border/50 bg-card/35 p-5 backdrop-blur-md">
+    <section className="night-focus-card min-h-0 shrink-0 rounded-[20px] border border-border/50 bg-card/35 p-4 backdrop-blur-md xl:h-full xl:overflow-hidden">
       <div className="flex items-center gap-2 border-b border-border/30 pb-3">
         <span className="text-lg">🎯</span>
         <h3 className="font-heading text-sm font-semibold tracking-wide">

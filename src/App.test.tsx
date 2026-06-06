@@ -181,6 +181,11 @@ describe("App", () => {
     expect(container.innerHTML).toContain("StatusStrip Stub")
     expect(container.innerHTML).toContain("RoleSpotlight Stub")
     expect(container.innerHTML).toContain("PlayerGrid Stub")
+    expect(container.innerHTML.indexOf("RoleSpotlight Stub")).toBeLessThan(
+      container.innerHTML.indexOf("PlayerGrid Stub"),
+    )
+    expect(container.innerHTML).toContain("game-situation-grid")
+    expect(container.innerHTML).toContain("side-rail-stack")
     expect(container.innerHTML).not.toContain(["导演", "控制台"].join(""))
 
     await act(async () => {
