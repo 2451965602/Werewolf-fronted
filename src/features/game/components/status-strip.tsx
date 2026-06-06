@@ -27,7 +27,7 @@ export function StatusStrip({ error, isInitialized }: StatusStripProps) {
         <Alert className="rounded-2xl border-violet-400/20 bg-violet-500/[0.04] text-violet-100">
           <AlertTitle>待开局</AlertTitle>
           <AlertDescription className="text-violet-200/80">
-            古堡仍在候场，请在导演台点击“开始游戏”完成首次发牌。
+            古堡仍在候场，请回到大厅开始新局完成首次发牌。
           </AlertDescription>
         </Alert>
       )}

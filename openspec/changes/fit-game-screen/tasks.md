@@ -6,9 +6,9 @@
 
 ## 2. Console Simplification
 
-- [ ] 2.1 Remove `ControlPanel` from the in-game `sideRail` composition in `App.tsx`.
-- [ ] 2.2 Delete the unused `control-panel.tsx` component and its tests after confirming no remaining imports.
-- [ ] 2.3 Update app-level tests and mocks so the console no longer expects director controls.
+- [x] 2.1 Remove `ControlPanel` from the in-game `sideRail` composition in `App.tsx`.
+- [x] 2.2 Delete the unused `control-panel.tsx` component and its tests after confirming no remaining imports.
+- [x] 2.3 Update app-level tests and mocks so the console no longer expects director controls.
 
 ## 3. 1920x1080 Layout Fit
 
