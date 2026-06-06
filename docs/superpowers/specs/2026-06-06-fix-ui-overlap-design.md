@@ -2,6 +2,8 @@
 comet_change: fix-ui-overlap
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-06-06-fix-ui-overlap
+status: final
 ---
 
 ## Summary

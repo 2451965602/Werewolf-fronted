@@ -11,9 +11,16 @@ The web frontend SHALL render a lobby-first entry and, once the user enters the 
 - **THEN** the primary narrative stage remains visible and scrollable
 - **AND** supporting regions for compact stage status, seat overview, and detailed player context do not collapse to zero height
 
+#### Scenario: Desktop seat overview preserves stage-first focus
+
+- **GIVEN** the user is viewing the desktop spectator console
+- **WHEN** the seat overview renders beside or around the primary narrative stage
+- **THEN** the layout preserves a clear primary focus on the main narrative stage
+- **AND** the seat overview remains readable without relying on absolute-positioned ring geometry that can overlap adjacent regions
+
 ### Requirement: Readable spectator timeline
 
-The web frontend SHALL present spectator-visible message flow as a structured timeline that distinguishes AI/player speech, system announcements, and vote-related events, and SHALL expose a separate current-round speech record view for player speech.
+The web frontend SHALL present spectator-visible message flow as a structured timeline that distinguishes AI/player speech, system announcements, and vote-related events, and SHALL expose a separate speech ledger view for player speech.
 
 #### Scenario: Timeline distinguishes message categories
 
@@ -29,22 +36,17 @@ The web frontend SHALL present spectator-visible message flow as a structured ti
 - **THEN** the frontend highlights the latest relevant item as the current focal point
 - **AND** keeps earlier entries browsable in the historical timeline
 
-#### Scenario: Current-round speech record stays synchronized with timeline
+#### Scenario: Current-round speech ledger stays synchronized when current-round speech exists
 
 - **GIVEN** synchronized game messages include player speech for the active round
-- **WHEN** the control console renders the desktop spectator view
-- **THEN** the frontend shows a dedicated speech record region for player speech from the current round
-- **AND** each speech record identifies the speaker and preserves message order
-- **AND** the dedicated speech record updates when new synchronized player speech arrives for that round
+- **WHEN** the frontend renders the speech ledger
+- **THEN** the speech ledger shows the active round's player speech in order
+- **AND** each speech record identifies the speaker and round context
 
-### Requirement: Spectator seat awareness on desktop
+#### Scenario: Speech ledger falls back to the latest available round
 
-The desktop spectator console SHALL provide a compact seat overview around the main stage that identifies seat number, role, and living status without requiring the detailed player card grid to remain in the primary focus area.
-
-#### Scenario: Compact desktop seat overview weakens eliminated players
-
-- **GIVEN** the user is viewing the desktop spectator console
-- **AND** synchronized player state includes both living and eliminated players
-- **WHEN** the compact seat overview renders around the main narrative stage
-- **THEN** each seat overview node identifies seat number and role
-- **AND** eliminated players are visually weakened compared to living players
+- **GIVEN** the active round currently has no player speech
+- **AND** earlier rounds contain player speech records
+- **WHEN** the frontend renders the speech ledger
+- **THEN** the speech ledger shows the most recent round that has player speech
+- **AND** the UI indicates that the displayed records are a fallback from that earlier round

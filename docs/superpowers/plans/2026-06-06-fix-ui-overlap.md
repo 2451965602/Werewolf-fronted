@@ -2,6 +2,7 @@
 change: fix-ui-overlap
 design-doc: docs/superpowers/specs/2026-06-06-fix-ui-overlap-design.md
 base-ref: 0e819bca54701a599edba24306ed3f768d74c559
+archived-with: 2026-06-06-fix-ui-overlap
 ---
 
 # Fix UI Overlap Implementation Plan
@@ -14,6 +15,7 @@ base-ref: 0e819bca54701a599edba24306ed3f768d74c559
 
 **Tech Stack:** React 19、TypeScript、Vite、Vitest、Tailwind v4、shadcn/ui（`Card`、`Badge`）
 
+archived-with: 2026-06-06-fix-ui-overlap
 ---
 
 ## File Structure

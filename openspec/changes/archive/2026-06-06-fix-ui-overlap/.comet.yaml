@@ -11,7 +11,7 @@ verification_report: docs/superpowers/reports/2026-06-06-fix-ui-overlap-verify.m
 branch_status: handled
 created_at: 2026-06-05
 verified_at: 2026-06-06
-archived: false
+archived: true
 handoff_context: openspec/changes/fix-ui-overlap/.comet/handoff/design-context.json
 handoff_hash: ebd5540f3adb41ec57eec3702df2d004fc16aa1989c9f8f3e57d50fa1c2784c0
 build_pause: null
