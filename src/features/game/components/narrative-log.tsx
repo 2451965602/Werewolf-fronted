@@ -58,7 +58,7 @@ function formatPhaseLabel(phase: TimelineItem["phase"]) {
 
 export function NarrativeLog({ items, emptyState }: NarrativeLogProps) {
   const hasItems = items.length > 0
-  const latestItem = hasItems ? items[items.length - 1] : null
+  const latestItem = hasItems ? items[0] : null
 
   return (
     <Card className="relative flex h-full min-h-[480px] flex-col overflow-hidden border-border/60 bg-[linear-gradient(180deg,rgba(24,24,27,0.92),rgba(9,9,11,0.94))] shadow-[0_24px_80px_rgba(0,0,0,0.24)] lg:min-h-0">

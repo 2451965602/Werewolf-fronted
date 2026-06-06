@@ -1,0 +1,14 @@
+{
+  "change": "fit-game-screen",
+  "phase": "design",
+  "mode": "compact",
+  "canonical_spec": "openspec",
+  "generated_by": "comet-handoff.sh",
+  "context_hash": "c2101455d3593cb5d539f60eea07dc4dea473edc51e2a81e1b81891fe2a3a6d5",
+  "files": [
+    { "path": "openspec/changes/fit-game-screen/proposal.md", "sha256": "82295893d55eb593fc606f70be94b9d8f2ded37f1f585ecb0b8bbab09a18d243" },
+    { "path": "openspec/changes/fit-game-screen/design.md", "sha256": "6362520f3ed641fe55160ab811c8fc921b0e3dcff81b3a28a7a227d76efe8cb8" },
+    { "path": "openspec/changes/fit-game-screen/tasks.md", "sha256": "47507c25a440c8eae6dcd4926fbbd7655434a7eba8e0091addd4ae5f0224501a" },
+    { "path": "openspec/changes/fit-game-screen/specs/werewolf-web-frontend/spec.md", "sha256": "025df947c48f5f9aaf066bd3d362f5474e19b250ce9fe5f208880799833ee0c9" }
+  ]
+}

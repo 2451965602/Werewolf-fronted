@@ -12,8 +12,8 @@ describe("SpeechLedger", () => {
           isFallback: false,
           latestSpeaker: "王芳",
           items: [
-            { id: "1", speaker: "李明", content: "先听大家。", round: 1, phase: "day" },
             { id: "2", speaker: "王芳", content: "我同意继续观察。", round: 1, phase: "day" },
+            { id: "1", speaker: "李明", content: "先听大家。", round: 1, phase: "day" },
           ],
         }}
       />
@@ -22,6 +22,9 @@ describe("SpeechLedger", () => {
     expect(html).toContain("本轮发言账册")
     expect(html).toContain("王芳")
     expect(html).toContain("我同意继续观察。")
+    expect(html.indexOf("我同意继续观察。")).toBeLessThan(
+      html.indexOf("先听大家。"),
+    )
   })
 
   it("renders a fallback title when showing the latest available speeches", () => {
@@ -33,8 +36,8 @@ describe("SpeechLedger", () => {
           isFallback: true,
           latestSpeaker: "王芳",
           items: [
-            { id: "1", speaker: "李明", content: "先听大家。", round: 1, phase: "day" },
             { id: "2", speaker: "王芳", content: "我同意继续观察。", round: 1, phase: "day" },
+            { id: "1", speaker: "李明", content: "先听大家。", round: 1, phase: "day" },
           ],
         }}
       />

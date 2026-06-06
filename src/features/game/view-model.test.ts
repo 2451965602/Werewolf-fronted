@@ -121,14 +121,6 @@ describe("buildGameViewModel", () => {
 
     expect(viewModel.timeline).toEqual([
       {
-        id: "2-7-player-0",
-        tone: "player",
-        content: "我是好人。",
-        speaker: "周涛",
-        round: 2,
-        phase: "day",
-      },
-      {
         id: "2-0-vote-1",
         tone: "vote",
         content: "2号王芳被放逐。",
@@ -136,8 +128,16 @@ describe("buildGameViewModel", () => {
         round: 2,
         phase: "day",
       },
+      {
+        id: "2-7-player-0",
+        tone: "player",
+        content: "我是好人。",
+        speaker: "周涛",
+        round: 2,
+        phase: "day",
+      },
     ])
-    expect(viewModel.timeline[1]?.tone).toBe("vote")
+    expect(viewModel.timeline[0]?.tone).toBe("vote")
   })
 
   it("maps narrator messages into a distinct timeline category", () => {
@@ -216,16 +216,16 @@ describe("buildGameViewModel", () => {
       latestSpeaker: "陈静",
       items: [
         {
-          id: "3-day-7-player-0",
-          speaker: "周涛",
-          content: "我是好人。",
+          id: "3-day-5-player-1",
+          speaker: "陈静",
+          content: "我也支持先从发言看。",
           round: 3,
           phase: "day",
         },
         {
-          id: "3-day-5-player-1",
-          speaker: "陈静",
-          content: "我也支持先从发言看。",
+          id: "3-day-7-player-0",
+          speaker: "周涛",
+          content: "我是好人。",
           round: 3,
           phase: "day",
         },
@@ -274,16 +274,16 @@ describe("buildGameViewModel", () => {
       latestSpeaker: "王芳",
       items: [
         {
-          id: "1-day-1-player-0",
-          speaker: "李明",
-          content: "上一轮我先发言。",
+          id: "1-day-2-player-1",
+          speaker: "王芳",
+          content: "上一轮我补充一点。",
           round: 1,
           phase: "day",
         },
         {
-          id: "1-day-2-player-1",
-          speaker: "王芳",
-          content: "上一轮我补充一点。",
+          id: "1-day-1-player-0",
+          speaker: "李明",
+          content: "上一轮我先发言。",
           round: 1,
           phase: "day",
         },

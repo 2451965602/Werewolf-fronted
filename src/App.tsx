@@ -5,7 +5,6 @@ import { StageStatusStrip } from "./features/game/components/stage-status-strip"
 import { NarrativeLog } from "./features/game/components/narrative-log"
 import { SpeechLedger } from "./features/game/components/speech-ledger"
 import { SeatRing } from "./features/game/components/seat-ring"
-import { ControlPanel } from "./features/game/components/control-panel"
 import { GameSummary } from "./features/game/components/game-summary"
 import { StatusStrip } from "./features/game/components/status-strip"
 import { PlayerGrid } from "./features/game/components/player-grid"
@@ -13,7 +12,7 @@ import { RoleSpotlight } from "./features/game/components/role-spotlight"
 import { PreGameScreen } from "./features/game/components/pre-game-screen"
 
 export function App() {
-  const { viewModel, requestState, refresh, start, advance } = useGameConsole()
+  const { viewModel, requestState, refresh, start } = useGameConsole()
   const [entryMode, setEntryMode] = useState<"lobby" | "console">("lobby")
   const isConsoleReady =
     entryMode === "console" && viewModel.screenMode === "console"
@@ -66,14 +65,7 @@ export function App() {
         </SeatRing>
       }
       sideRail={
-        <div className="flex flex-col gap-6">
-          <ControlPanel
-            requestState={requestState}
-            isInitialized={viewModel.isInitialized}
-            onRefresh={refresh}
-            onStart={start}
-            onAdvance={advance}
-          />
+        <div className="flex h-full min-h-0 flex-col gap-4">
           <SpeechLedger ledger={viewModel.speechLedger} />
           <GameSummary summary={viewModel.summary} />
           <StatusStrip

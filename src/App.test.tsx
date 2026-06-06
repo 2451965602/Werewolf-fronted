@@ -46,10 +46,6 @@ vi.mock("./features/game/components/narrative-log", () => ({
   NarrativeLog: () => <div>NarrativeLog Stub</div>,
 }))
 
-vi.mock("./features/game/components/control-panel", () => ({
-  ControlPanel: () => <div>ControlPanel Stub</div>,
-}))
-
 vi.mock("./features/game/components/game-summary", () => ({
   GameSummary: () => <div>GameSummary Stub</div>,
 }))
@@ -181,11 +177,11 @@ describe("App", () => {
     expect(container.innerHTML).toContain("NarrativeLog Stub")
     expect(container.innerHTML).toContain("SpeechLedger Stub")
     expect(container.innerHTML).toContain("SeatRing Stub")
-    expect(container.innerHTML).toContain("ControlPanel Stub")
     expect(container.innerHTML).toContain("GameSummary Stub")
     expect(container.innerHTML).toContain("StatusStrip Stub")
     expect(container.innerHTML).toContain("RoleSpotlight Stub")
     expect(container.innerHTML).toContain("PlayerGrid Stub")
+    expect(container.innerHTML).not.toContain(["导演", "控制台"].join(""))
 
     await act(async () => {
       root.unmount()

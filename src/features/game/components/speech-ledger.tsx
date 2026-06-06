@@ -17,7 +17,7 @@ export function SpeechLedger({ ledger }: SpeechLedgerProps) {
     : "等待本轮首位玩家发言..."
 
   return (
-    <Card className="flex flex-col h-[320px] lg:h-[480px] bg-zinc-950/20 backdrop-blur-md border-zinc-800/60 shadow-lg overflow-hidden">
+    <Card className="flex h-[320px] flex-col overflow-hidden border-zinc-800/60 bg-zinc-950/20 shadow-lg backdrop-blur-md lg:h-auto lg:min-h-0 lg:flex-1">
       <CardHeader className="pb-3 border-b border-zinc-900/50">
         <div className="flex items-center justify-between">
           <CardTitle className="text-sm font-semibold tracking-wider text-muted-foreground uppercase flex items-center gap-2">

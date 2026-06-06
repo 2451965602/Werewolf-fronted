@@ -1,8 +1,4 @@
-## Purpose
-
-Define the web frontend behavior for the Werewolf spectator experience, including the lobby entry, desktop game-view layout, spectator timeline, speech ledger, and supporting game-state regions.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Dual-mode werewolf web experience
 
