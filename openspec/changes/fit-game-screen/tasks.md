@@ -18,6 +18,6 @@
 
 ## 4. Verification
 
-- [ ] 4.1 Run focused unit tests for view-model, app shell, narrative log, and speech ledger.
-- [ ] 4.2 Run typecheck and lint.
-- [ ] 4.3 Use browser verification at 1920x1080 to confirm the primary console regions are visible, the director console is absent, and timeline/speech ledger lists show newest records first.
+- [x] 4.1 Run focused unit tests for view-model, app shell, narrative log, and speech ledger.
+- [x] 4.2 Run typecheck and lint.
+- [x] 4.3 Use browser verification at 1920x1080 to confirm the primary console regions are visible, the director console is absent, and timeline/speech ledger lists show newest records first.
