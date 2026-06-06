@@ -2,6 +2,7 @@
 change: fit-game-screen
 design-doc: docs/superpowers/specs/2026-06-06-fit-game-screen-design.md
 base-ref: 27f5185df1eb3f809e49deb54a6e06b83fcb9596
+archived-with: 2026-06-06-fit-game-screen
 ---
 
 # Fit Game Screen Implementation Plan
@@ -14,6 +15,7 @@ base-ref: 27f5185df1eb3f809e49deb54a6e06b83fcb9596
 
 **Tech Stack:** React 19、TypeScript、Vite、Vitest、Tailwind v4、shadcn/ui
 
+archived-with: 2026-06-06-fit-game-screen
 ---
 
 ## File Structure

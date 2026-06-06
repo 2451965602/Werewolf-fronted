@@ -2,6 +2,8 @@
 comet_change: fit-game-screen
 role: technical-design
 canonical_spec: openspec
+archived-with: 2026-06-06-fit-game-screen
+status: final
 ---
 
 ## Context
